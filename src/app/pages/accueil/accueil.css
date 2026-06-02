@@ -1,0 +1,301 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* NAVBAR */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 40px;
+  background-color: white;
+  border-bottom: 1px solid #e2e8f0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar-brand {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0d1f3c;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 32px;
+}
+
+.navbar-links a {
+  text-decoration: none;
+  color: #4a5568;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.navbar-links a.active {
+  color: #0d1f3c;
+  font-weight: 700;
+  border-bottom: 2px solid #0d1f3c;
+  padding-bottom: 4px;
+}
+
+/* HERO */
+.hero {
+  background: linear-gradient(135deg, #0d1f3c 0%, #1a3a6b 100%);
+  padding: 80px 40px;
+  text-align: center;
+  color: white;
+}
+
+.hero h1 {
+  font-size: 42px;
+  font-weight: 800;
+  margin-bottom: 16px;
+}
+
+.hero p {
+  font-size: 16px;
+  color: #a0aec0;
+  margin-bottom: 40px;
+}
+
+/* SEARCH BOX */
+.search-box {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.transport-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.transport-tabs button {
+  padding: 10px 20px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: #4a5568;
+  transition: all 0.2s;
+}
+
+.transport-tabs button.active {
+  background-color: #4fd1c5;
+  color: white;
+  border-color: #4fd1c5;
+}
+
+.search-fields {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+}
+
+.field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #4a5568;
+  letter-spacing: 1px;
+}
+
+.field input {
+  padding: 12px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+}
+
+.field input:focus {
+  border-color: #4fd1c5;
+}
+
+.btn-search {
+  padding: 12px 24px;
+  background-color: #f97316;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+
+.btn-search:hover {
+  background-color: #ea6c0a;
+}
+
+/* OFFRES */
+.offres-section {
+  padding: 60px 40px;
+  background-color: #f7fafc;
+}
+
+.offres-section h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #0d1f3c;
+  margin-bottom: 32px;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 12px;
+}
+
+.offres-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.offre-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid #0d9488;
+  transition: transform 0.2s;
+}
+
+.offre-card:hover {
+  transform: translateY(-4px);
+}
+
+.offre-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.offre-icon {
+  font-size: 28px;
+  background: #f0fdf9;
+  padding: 10px;
+  border-radius: 50%;
+}
+
+.offre-badge {
+  background-color: #e6fffa;
+  color: #0d9488;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.offre-card h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0d1f3c;
+  margin-bottom: 8px;
+}
+
+.offre-info {
+  font-size: 13px;
+  color: #718096;
+  margin-bottom: 20px;
+}
+
+.offre-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.offre-label {
+  font-size: 10px;
+  color: #a0aec0;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.offre-prix {
+  font-size: 22px;
+  font-weight: 800;
+  color: #0d9488;
+}
+
+.btn-reserver {
+  padding: 10px 20px;
+  background-color: #0d1f3c;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-reserver:hover {
+  background-color: #1a3a6b;
+}
+
+/* FOOTER */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 40px;
+  background: white;
+  border-top: 1px solid #e2e8f0;
+  font-size: 13px;
+  color: #718096;
+}
+
+.footer-links {
+  display: flex;
+  gap: 20px;
+}
+
+.footer-links a {
+  color: #718096;
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  color: #0d1f3c;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 28px;
+  }
+
+  .search-fields {
+    flex-direction: column;
+  }
+
+  .offres-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+
+  .navbar-links {
+    display: none;
+  }
+}

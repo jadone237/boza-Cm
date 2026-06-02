@@ -1,0 +1,31 @@
+<div class="app-container">
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>BozaCM</h2>
+      <span>PLATEFORME D'ADMINISTRATION</span>
+    </div>
+<nav class="sidebar-nav">
+      <a *ngFor="let item of menuItems" [routerLink]="item.route" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">{{ item.icon }}</span>
+        <span class="nav-label">{{ item.label }}</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a class="nav-item" routerLink="/dashboard/parametres">
+        <span class="nav-icon">⚙️</span>
+        <span class="nav-label">Paramètres</span>
+      </a>
+      <a class="nav-item logout" (click)="logout()" style="cursor:pointer;">
+        <span class="nav-icon">🚪</span>
+        <span class="nav-label">Déconnexion</span>
+      </a>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <router-outlet />
+  </main>
+
+</div>

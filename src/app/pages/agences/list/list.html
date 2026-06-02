@@ -1,1 +1,106 @@
-<p>list works!</p>
+<!-- TOPBAR -->
+<div class="topbar">
+  <h2>Gestion des agences</h2>
+  <div class="topbar-right">
+    <span class="icon">🔔</span>
+    <span class="icon">❓</span>
+    <button class="btn-new" (click)="nouvelleAgence()">+ Nouvelle agence</button>
+    <div class="admin-info">
+      <div>
+        <span class="admin-name">Administrateur</span>
+        <span class="admin-role">Super Admin</span>
+      </div>
+      <div class="avatar">👤</div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-info">
+      <span class="stat-label">TOTAL AGENCES</span>
+      <span class="stat-value">{{ agences.length }}</span>
+      <span class="stat-sub">📈 +0 cette semaine</span>
+    </div>
+    <span class="stat-icon">💼</span>
+  </div>
+  <div class="stat-card">
+    <div class="stat-info">
+      <span class="stat-label">OFFRES PUBLIÉES</span>
+      <span class="stat-value">12</span>
+      <span class="stat-sub">✅ 85% de conversion</span>
+    </div>
+    <span class="stat-icon">📣</span>
+  </div>
+  <div class="stat-card">
+    <div class="stat-info">
+      <span class="stat-label">RÉSERVATIONS</span>
+      <span class="stat-value">34</span>
+      <span class="stat-sub">⏰ 10 en attente</span>
+    </div>
+    <span class="stat-icon">📅</span>
+  </div>
+</div>
+
+<!-- LISTE -->
+<div class="liste-container">
+  <div class="liste-header">
+    <h3>Liste des agences partenaires</h3>
+    <div class="search-wrapper">
+      <span>🔍</span>
+      <input
+        type="text"
+        placeholder="Rechercher une agence..."
+        [(ngModel)]="recherche"
+        name="recherche"/>
+    </div>
+  </div>
+
+  <div class="spinner-wrapper" *ngIf="isLoading">
+    <div class="spinner"></div>
+  </div>
+
+  <table *ngIf="!isLoading">
+    <thead>
+      <tr>
+        <th>NOM DE L'AGENCE</th>
+        <th>EMAIL PROFESSIONNEL</th>
+        <th>TÉLÉPHONE</th>
+        <th>ACTIONS</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let agence of agencesPaginees">
+        <td>
+          <div class="agence-nom">
+            <div class="initiales">{{ agence.initiales }}</div>
+            <span>{{ agence.nom }}</span>
+          </div>
+        </td>
+        <td>{{ agence.email }}</td>
+        <td>{{ agence.telephone }}</td>
+        <td>
+          <div class="actions">
+            <button class="btn-modifier" (click)="modifierAgence(agence.id)">✏️ Modifier</button>
+            <button class="btn-supprimer" (click)="supprimerAgence(agence.id)">🗑️ Supprimer</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="pagination">
+    <span>Affichage de {{ (page-1)*pageSize + 1 }} à {{ page*pageSize > agencesFiltrees.length ? agencesFiltrees.length : page*pageSize }} sur {{ agencesFiltrees.length }} agences</span>
+    <div class="pages">
+      <button (click)="page = page - 1" [disabled]="page === 1">‹</button>
+      <button
+        *ngFor="let p of [].constructor(totalPages); let i = index"
+        [class.active]="page === i + 1"
+        (click)="page = i + 1">
+        {{ i + 1 }}
+      </button>
+      <button (click)="page = page + 1" [disabled]="page === totalPages">›</button>
+    </div>
+  </div>
+</div>
