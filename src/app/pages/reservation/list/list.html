@@ -1,1 +1,198 @@
-<p>list works!</p>
+<div class="admin-container">
+
+  <!-- ===== SIDEBAR (menu gauche) ===== -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-icon">🧳</span>
+      <div>
+        <h2>BozaCM</h2>
+        <small>PORTAIL DES DIRIGEANTS</small>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item">🏢 Agences</a>
+      <a href="#" class="nav-item">🗺️ Voyages</a>
+      <a href="#" class="nav-item">🏷️ Offres</a>
+      <a href="#" class="nav-item active">📋 Réservations</a>
+      <a href="#" class="nav-item">📊 Statistiques</a>
+      <a href="#" class="nav-item">📄 Raports</a>
+    </nav>
+
+    <div class="sidebar-user">
+      <div class="user-avatar">AD</div>
+      <div>
+        <p>Admin User</p>
+        <small>admin&#64;bozacm.cm</small>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ===== CONTENU PRINCIPAL ===== -->
+  <main class="main-content">
+
+   <!-- HEADER -->
+<div class="page-header">
+  <h1>Réservations</h1>
+  <div class="header-actions">
+
+    <!-- Barre de recherche avec icône loupe -->
+    <div class="search-wrapper">
+      <span class="search-icon">🔍</span>
+      <input type="text" placeholder="Rechercher une réservation..." class="search-input"/>
+    </div>
+
+    <span class="icon-bell">🔔</span>
+    <span class="icon-settings">⚙️</span>
+
+    <!-- Info admin avec avatar -->
+    <div class="admin-info">
+      <div class="admin-right">
+        <div>
+          <span>Admin</span>
+          <small>BozaCM Executive</small>
+        </div>
+        <div class="admin-avatar">AD</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+    <!-- STATISTIQUES -->
+    <div class="stats-cards">
+      <div class="stat-card">
+        <div class="stat-icon">📊</div>
+        <div>
+          <small>TOTAL</small>
+          <h2>34</h2>
+          <p>Volume global mensuel</p>
+        </div>
+      </div>
+      <div class="stat-card confirmed">
+        <div class="stat-icon">✅</div>
+        <div>
+          <small>CONFIRMÉES</small>
+          <h2>20</h2>
+          <p>62% du volume total</p>
+        </div>
+      </div>
+      <div class="stat-card pending">
+        <div class="stat-icon">💬</div>
+        <div>
+          <small>EN ATTENTE</small>
+          <h2>10</h2>
+          <p>Nécessite action</p>
+        </div>
+      </div>
+      <div class="stat-card cancelled">
+        <div class="stat-icon">❌</div>
+        <div>
+          <small>ANNULÉES</small>
+          <h2>4</h2>
+          <p>Pertes enregistrées</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- FILTRES -->
+    <div class="filters">
+      <select class="filter-select">
+        <option>Tous statuts</option>
+        <option>Confirmée</option>
+        <option>En attente</option>
+        <option>Annulée</option>
+      </select>
+      <select class="filter-select">
+        <option>Tous types</option>
+        <option>Bus</option>
+        <option>Avion</option>
+      </select>
+      <button class="btn-new">+ Nouvelle Réservation</button>
+    </div>
+
+    <!-- TABLEAU DES RESERVATIONS -->
+    <div class="table-container">
+      <table class="reservations-table">
+        <thead>
+          <tr>
+            <th>CLIENT</th>
+            <th>OFFRE</th>
+            <th>TYPE</th>
+            <th>DATE</th>
+            <th>STATUT</th>
+            <th>ACTIONS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div class="client-info">
+                <div class="avatar">SA</div>
+                <span>Serge Atangana</span>
+              </div>
+            </td>
+            <td>VIP Ydé → Dla</td>
+            <td><span class="type-badge">🚌 BUS</span></td>
+            <td>25/03/2026</td>
+            <td><span class="status confirmed">CONFIRMÉE</span></td>
+            <td>
+              <div class="actions-cell">
+                <button class="btn-billet">Billet</button>
+                <button class="btn-annuler">Annuler</button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="client-info">
+                <div class="avatar">FM</div>
+                <span>Florence Mvondo</span>
+              </div>
+            </td>
+            <td>Vol Dla → Garoua</td>
+            <td><span class="type-badge">✈️ AVION</span></td>
+            <td>26/03/2026</td>
+            <td><span class="status pending">EN ATTENTE</span></td>
+            <td>
+              <div class="actions-cell">
+                <button class="btn-confirmer">Confirmer</button>
+                <button class="btn-annuler">Annuler</button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="client-info">
+                <div class="avatar">EB</div>
+                <span>Estelle Beyala</span>
+              </div>
+            </td>
+            <td>Express Baf → Bda</td>
+            <td><span class="type-badge">🚌 BUS</span></td>
+            <td>28/03/2026</td>
+            <td><span class="status cancelled">ANNULÉE</span></td>
+            <td>
+              <div class="actions-cell">
+                <button class="btn-confirmer">Confirmer</button>
+                <button class="btn-annuler" disabled>Annuler</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- PAGINATION -->
+      <div class="pagination">
+        <span>Affichage de 1-3 sur 34 réservations</span>
+        <div class="pages">
+          <button>‹</button>
+          <button class="active">1</button>
+          <button>2</button>
+          <button>›</button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
