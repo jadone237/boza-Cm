@@ -1,1 +1,146 @@
-<p>form works!</p>
+<div class="client-container">
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-logo">BozaCM</div>
+    <div class="nav-links">
+      <a href="#" class="nav-link">Accueil</a>
+      <a href="#" class="nav-link">Offres</a>
+      <a href="#" class="nav-link active">Réserver</a>
+    </div>
+    <div class="nav-user">👤</div>
+  </nav>
+
+  <!-- CONTENU PRINCIPAL -->
+  <main class="form-main">
+
+    <!-- TITRE -->
+    <div class="form-title">
+      <h1>Confirmation de votre voyage</h1>
+      <p>Finalisez votre réservation pour votre trajet interurbain. Une expérience de voyage premium vous attend avec BozaCM.</p>
+    </div>
+
+    <!-- LAYOUT 2 COLONNES -->
+    <div class="form-layout">
+
+      <!-- COLONNE GAUCHE - Infos du voyage -->
+      <div class="trip-info">
+
+        <!-- Image du bus -->
+        <div class="trip-image">
+            <img src="bus.jpg" alt="Bus VIP" class="trip-img"/>
+                   <span class="trip-badge">BUS VIP CLIMATISÉ</span>
+        </div>
+
+        <!-- Détails du trajet -->
+        <div class="trip-details">
+          <div class="trip-route">
+            <h2>Yaoundé → Douala</h2>
+            <span class="trip-price">5 000 FCFA</span>
+          </div>
+          <p class="trip-taxes">TOUTES TAXES COMPRISES</p>
+          <p class="trip-depart">🕐 Départ aujourd'hui à 14h30</p>
+
+          <div class="trip-stats">
+            <div class="trip-stat">
+              <small>Durée estimée</small>
+              <p>3h 30min</p>
+            </div>
+            <div class="trip-stat">
+              <small>Places disponibles</small>
+              <p>20 places</p>
+            </div>
+          </div>
+
+          <div class="trip-amenities">
+            <div class="amenity">✅ Sièges inclinables et spacieux</div>
+            <div class="amenity">✅ Wi-Fi haut débit et ports USB</div>
+            <div class="amenity">✅ Service à bord inclus</div>
+          </div>
+
+          <!-- Note importante -->
+          <div class="trip-note">
+            <h4>Note Importante</h4>
+            <p>Veuillez vous présenter au terminal au moins 30 minutes avant le départ pour l'enregistrement de vos bagages.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- COLONNE DROITE - Formulaire -->
+      <div class="booking-form">
+        <h3>Informations passager</h3>
+
+        <!-- Sélection type transport -->
+        <div class="transport-tabs">
+          <button class="tab active">🚌 Bus</button>
+          <button class="tab">🚂 Train</button>
+          <button class="tab">✈️ Avion</button>
+        </div>
+
+        <!-- Formulaire -->
+        <form class="passenger-form">
+
+          <div class="form-group">
+            <label>NOM COMPLET</label>
+            <div class="input-wrapper">
+              <input type="text" placeholder="Entrez votre nom et prénom" class="form-input"/>
+              <span class="input-icon">👤</span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>EMAIL</label>
+              <div class="input-wrapper">
+                <input type="email" placeholder="votre&#64;email.com" class="form-input"/>
+                <span class="input-icon">✉️</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>TÉLÉPHONE</label>
+              <div class="input-wrapper">
+                <input type="tel" placeholder="+237 ..." class="form-input"/>
+                <span class="input-icon">📱</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Montant total -->
+          <div class="total-box">
+            <div class="total-left">
+              <small>Montant total</small>
+              <h2>5 000 FCFA</h2>
+            </div>
+            <div class="total-right">
+              <span>1 Adulte</span>
+            </div>
+          </div>
+
+          <!-- Bouton confirmer -->
+          <button type="submit" class="btn-confirm">
+            ✅ Confirmer la réservation
+          </button>
+
+          <p class="form-terms">
+            En cliquant sur confirmer, vous acceptez nos
+            <a href="#">Conditions Générales de Vente</a> et notre
+            <a href="#">Politique de Confidentialité</a>.
+          </p>
+
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-logo">BozaCM</div>
+    <div class="footer-links">
+      <a href="#">Conditions Générales</a>
+      <a href="#">Confidentialité</a>
+      <a href="#">Aide</a>
+    </div>
+    <span>© 2024 BozaCM. Tous droits réservés.</span>
+  </footer>
+
+</div>
