@@ -4,7 +4,7 @@ import { Layout } from './components/layout/layout';
 import { Accueil } from './pages/accueil/accueil';
 
 export const routes: Routes = [
-  { path: '', component: Accueil },
+  { path: '', component: Login },
   { path: 'accueil', component: Accueil },
   { path: 'login', component: Login },
   {
@@ -21,6 +21,8 @@ export const routes: Routes = [
       { path: 'offres', loadComponent: () => import('./pages/offres/list/list').then(m => m.List) },
       { path: 'offres/form', loadComponent: () => import('./pages/offres/form/form').then(m => m.Form) },
       { path: 'offres/form/:id', loadComponent: () => import('./pages/offres/form/form').then(m => m.Form) },
+      { path: 'statistiques', loadComponent: () => import('./pages/statistiques/statistiques').then(m => m.Statistiques) },
+      { path: 'rapports', loadComponent: () => import('./pages/rapports/rapports').then(m => m.Rapports) },
     ]
   },
 ];

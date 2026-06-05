@@ -1,48 +1,68 @@
 <!-- NAVBAR -->
-<nav class="navbar">
-  <div class="navbar-brand">BozaCM</div>
-  <div class="navbar-links">
-    <a href="#" class="active">Accueil</a>
-    <a href="#">Réservations</a>
-    <a href="#">Aide</a>
+<nav class="navbar navbar-expand-lg bg-white border-bottom px-4 py-3">
+  <a class="navbar-brand fw-bold" style="color: #0d1f3c;">BozaCM</a>
+  <div class="d-flex gap-4 mx-auto">
+    <a href="#" class="nav-link fw-semibold border-bottom border-dark pb-1">Accueil</a>
+    <a href="#" class="nav-link text-muted">Réservations</a>
+    <a href="#" class="nav-link text-muted">Aide</a>
   </div>
-  <div class="navbar-right">
-    <span>❓</span>
+  <div class="d-flex align-items-center gap-2">
+    <i class="bi bi-question-circle fs-5 text-muted"></i>
   </div>
 </nav>
 
 <!-- HERO -->
-<section class="hero">
-  <div class="hero-content">
-    <h1>Voyagez à travers le Cameroun CM</h1>
-    <p>Bus, Avion ou Train — réservez votre voyage en quelques clics</p>
+<section style="background: linear-gradient(135deg, #0d1f3c 0%, #1a3a6b 100%); padding: 80px 40px; color: white;">
+  <div class="text-center mb-4">
+    <h1 class="fw-bold" style="font-size: 42px;">Voyagez à travers le Cameroun CM</h1>
+    <p class="text-muted">Bus, Avion ou Train — réservez votre voyage en quelques clics</p>
+  </div>
 
-    <!-- SEARCH BOX -->
-    <div class="search-box">
-      <div class="transport-tabs">
-        <button
-          *ngFor="let t of transportTypes"
-          [class.active]="activeType === t.label"
-          (click)="selectType(t.label)">
-          {{ t.icon }} {{ t.label }}
-        </button>
+  <!-- SEARCH BOX -->
+  <div class="card mx-auto p-4" style="max-width: 900px; border-radius: 16px;">
+
+    <!-- TABS -->
+    <div class="d-flex gap-2 mb-3">
+      <button
+        *ngFor="let t of transportTypes"
+        class="btn btn-sm"
+        [ngClass]="activeType === t.label ? 'btn-success' : 'btn-outline-secondary'"
+        (click)="selectType(t.label)">
+        <i class="bi me-1" [ngClass]="{
+          'bi-bus-front': t.label === 'BUS',
+          'bi-airplane': t.label === 'AVION',
+          'bi-train-front': t.label === 'TRAIN'
+        }"></i>
+        {{ t.label }}
+      </button>
+    </div>
+
+    <!-- FIELDS -->
+    <div class="row g-2 align-items-end">
+      <div class="col-md-3">
+        <label class="form-label text-muted small fw-semibold text-uppercase">Départ</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+          <input type="text" class="form-control" [(ngModel)]="depart" placeholder="Douala" name="depart"/>
+        </div>
       </div>
-
-      <div class="search-fields">
-        <div class="field">
-          <label>DÉPART</label>
-          <input type="text" [(ngModel)]="depart" placeholder="Douala" name="depart"/>
+      <div class="col-md-3">
+        <label class="form-label text-muted small fw-semibold text-uppercase">Destination</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-geo-alt-fill"></i></span>
+          <input type="text" class="form-control" [(ngModel)]="destination" placeholder="Yaoundé" name="destination"/>
         </div>
-        <div class="field">
-          <label>DESTINATION</label>
-          <input type="text" [(ngModel)]="destination" placeholder="Yaoundé" name="destination"/>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label text-muted small fw-semibold text-uppercase">Date</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+          <input type="date" class="form-control" [(ngModel)]="date" name="date"/>
         </div>
-        <div class="field">
-          <label>DATE</label>
-          <input type="date" [(ngModel)]="date" name="date"/>
-        </div>
-        <button class="btn-search" (click)="rechercher()">
-          🔍 Rechercher
+      </div>
+      <div class="col-md-3">
+        <button class="btn btn-warning w-100 fw-semibold" (click)="rechercher()">
+          <i class="bi bi-search me-1"></i> Rechercher
         </button>
       </div>
     </div>
@@ -50,34 +70,46 @@
 </section>
 
 <!-- OFFRES DISPONIBLES -->
-<section class="offres-section">
-  <h2>Offres disponibles</h2>
-  <div class="offres-grid">
-    <div class="offre-card" *ngFor="let offre of offres">
-      <div class="offre-header">
-        <span class="offre-icon">{{ activeType === 'AVION' ? '✈️' : activeType === 'TRAIN' ? '🚆' : '🚌' }}</span>
-        <span class="offre-badge">{{ offre.badge }}</span>
-      </div>
-      <h3>{{ offre.titre }}</h3>
-      <p class="offre-info">⏱ {{ offre.duree }} - {{ offre.agence }}</p>
-      <div class="offre-footer">
-        <div>
-          <span class="offre-label">À PARTIR DE</span>
-          <div class="offre-prix">{{ offre.prix | number }} FCFA</div>
+<section class="container-fluid px-4 py-5">
+  <h5 class="fw-bold mb-4">Offres disponibles</h5>
+  <div class="row g-3">
+    <div class="col-md-4" *ngFor="let offre of offres">
+      <div class="card border shadow-sm h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="bg-light rounded p-2">
+              <i class="bi fs-4 text-secondary" [ngClass]="{
+                'bi-bus-front': offre.type === 'BUS',
+                'bi-airplane': offre.type === 'AVION',
+                'bi-train-front': offre.type === 'TRAIN'
+              }"></i>
+            </div>
+            <span class="badge bg-secondary">{{ offre.badge }}</span>
+          </div>
+          <h6 class="fw-bold">{{ offre.titre }}</h6>
+          <p class="text-muted small">
+            <i class="bi bi-clock me-1"></i>{{ offre.duree }} — {{ offre.agence }}
+          </p>
+          <div class="d-flex justify-content-between align-items-center mt-3">
+            <div>
+              <div class="text-muted" style="font-size:10px; text-transform:uppercase;">À partir de</div>
+              <div class="fw-bold" style="font-size:20px; color:#0d9488;">{{ offre.prix | number }} FCFA</div>
+            </div>
+            <button class="btn btn-sm btn-dark">Réserver</button>
+          </div>
         </div>
-        <button class="btn-reserver">Réserver</button>
       </div>
     </div>
   </div>
 </section>
 
 <!-- FOOTER -->
-<footer class="footer">
-  <span><strong>BozaCM</strong></span>
-  <span>© 2024 BozaCM. Découvrez le Cameroun en 1 clic.</span>
-  <div class="footer-links">
-    <a href="#">Contact</a>
-    <a href="#">Conditions d'utilisation</a>
-    <a href="#">Confidentialité</a>
+<footer class="border-top px-4 py-4 d-flex justify-content-between align-items-center bg-white">
+  <strong style="color: #0d1f3c;">BozaCM</strong>
+  <small class="text-muted">© 2024 BozaCM. Découvrez le Cameroun en 1 clic.</small>
+  <div class="d-flex gap-3">
+    <a href="#" class="text-muted small text-decoration-none">Contact</a>
+    <a href="#" class="text-muted small text-decoration-none">Conditions d'utilisation</a>
+    <a href="#" class="text-muted small text-decoration-none">Confidentialité</a>
   </div>
 </footer>
