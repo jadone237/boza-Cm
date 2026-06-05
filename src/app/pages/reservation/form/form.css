@@ -21,9 +21,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 48px;
+  padding: 8px 48px;
   border-bottom: 1px solid #e2e8f0;
   background: white;
+  height: 70px;
 }
 
 .nav-logo {
@@ -436,4 +437,10 @@
 
 .trip-image {
   position: relative;
+}
+
+.logo-img {
+  height: 55px;
+  width: auto;
+  object-fit: contain;
 }
