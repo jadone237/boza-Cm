@@ -1,1 +1,57 @@
-<p>form works!</p>
+<div class="topbar">
+  <div class="topbar-left">
+    <button class="btn-back" (click)="annuler()">← Retour</button>
+    <h2>{{ isEditMode ? 'Modifier une agence' : 'Nouvelle agence' }}</h2>
+  </div>
+</div>
+
+<div class="form-container">
+
+  <div class="success-message" *ngIf="successMessage">
+    ✅ {{ successMessage }}
+  </div>
+
+  <form [formGroup]="agenceForm" (ngSubmit)="onSubmit()">
+
+    <div class="form-group">
+      <label>NOM DE L'AGENCE *</label>
+      <input type="text" formControlName="nom" placeholder="Ex: Transcam Voyages"/>
+      <span class="error" *ngIf="nom?.invalid && nom?.touched">
+        Le nom est obligatoire (minimum 3 caractères)
+      </span>
+    </div>
+
+    <div class="form-group">
+      <label>EMAIL PROFESSIONNEL *</label>
+      <input type="email" formControlName="email" placeholder="Ex: contact@agence.cm"/>
+      <span class="error" *ngIf="email?.invalid && email?.touched">
+        Email invalide
+      </span>
+    </div>
+
+    <div class="form-group">
+      <label>TÉLÉPHONE *</label>
+      <input type="text" formControlName="telephone" placeholder="Ex: 691 234 567"/>
+      <span class="error" *ngIf="telephone?.invalid && telephone?.touched">
+        Numéro invalide (9 à 13 chiffres)
+      </span>
+    </div>
+
+    <div class="form-group">
+      <label>ADRESSE *</label>
+      <input type="text" formControlName="adresse" placeholder="Ex: Yaoundé, Cameroun"/>
+      <span class="error" *ngIf="adresse?.invalid && adresse?.touched">
+        L'adresse est obligatoire
+      </span>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn-annuler" (click)="annuler()">Annuler</button>
+      <button type="submit" class="btn-soumettre" [disabled]="isLoading">
+        <span *ngIf="isLoading" class="spinner-small"></span>
+        {{ isLoading ? 'Enregistrement...' : (isEditMode ? 'Modifier' : 'Créer') }}
+      </button>
+    </div>
+
+  </form>
+</div>
