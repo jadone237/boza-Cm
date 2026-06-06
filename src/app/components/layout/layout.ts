@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterOutlet, RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -11,15 +11,17 @@ import { CommonModule } from '@angular/common';
 })
 export class Layout {
   menuItems = [
-    { label: 'Agences', icon: '🏢', route: '/dashboard/agences' },
-    { label: 'Trajets', icon: '🗺️', route: '/dashboard/trajets' },
-    { label: 'Offres', icon: '🏷️', route: '/dashboard/offres' },
-    { label: 'Réservations', icon: '🎫', route: '/dashboard/reservations' },
-    { label: 'Statistiques', icon: '📊', route: '/dashboard/statistiques' },
-    { label: 'Rapports', icon: '📋', route: '/dashboard/rapports' },
+    { label: 'Agences', icon: 'bi-building', route: '/dashboard/agences' },
+    { label: 'Trajets', icon: 'bi-signpost-2', route: '/dashboard/trajets' },
+    { label: 'Offres', icon: 'bi-tag', route: '/dashboard/offres' },
+    { label: 'Réservations', icon: 'bi-ticket-perforated', route: '/dashboard/reservations' },
+    { label: 'Statistiques', icon: 'bi-bar-chart', route: '/dashboard/statistiques' },
+    { label: 'Rapports', icon: 'bi-file-text', route: '/dashboard/rapports' },
   ];
 
+  constructor(private router: Router) {}
+
   logout() {
-    // Navigation vers login
+    this.router.navigate(['/login']);
   }
 }

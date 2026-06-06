@@ -19,6 +19,7 @@
   flex-direction: column;
   justify-content: space-between;
   height: 100vh;
+  transition: all 0.3s ease;
 }
 
 .sidebar-header {
@@ -99,8 +100,8 @@
   padding: 0;
 }
 
-/* RESPONSIVE */
-@media (max-width: 768px) {
+/* RESPONSIVE TABLETTE */
+@media (max-width: 992px) {
   .sidebar {
     width: 70px;
     min-width: 70px;
@@ -115,5 +116,67 @@
   .nav-item {
     justify-content: center;
     padding: 14px;
+  }
+
+  .nav-icon {
+    width: auto;
+  }
+}
+
+/* RESPONSIVE MOBILE */
+@media (max-width: 576px) {
+  .app-container {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .sidebar {
+    width: 100%;
+    min-width: 100%;
+    height: auto;
+    flex-direction: row;
+    border-right: none;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .sidebar-header {
+    display: none;
+  }
+
+  .sidebar-nav {
+    display: flex;
+    flex-direction: row;
+    padding: 8px;
+    overflow-x: auto;
+    flex: 1;
+  }
+
+  .nav-item {
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 12px;
+    font-size: 10px;
+    margin-bottom: 0;
+    border-left: none !important;
+    border-bottom: 3px solid transparent;
+  }
+
+  .nav-item.active {
+    border-bottom: 3px solid #0d9488;
+    border-left: none;
+  }
+
+  .nav-label {
+    display: block !important;
+    font-size: 10px;
+  }
+
+  .sidebar-footer {
+    display: none;
+  }
+
+  .main-content {
+    height: auto;
   }
 }
