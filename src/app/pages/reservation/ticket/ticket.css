@@ -346,6 +346,7 @@
   text-decoration: underline;
 }
 
+
 /* ===== IMPRESSION ===== */
 @media print {
   .ticket-actions-bar {
@@ -355,5 +356,45 @@
   .ticket-page {
     background: white;
     padding: 0;
+  }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .ticket-page {
+    padding: 12px;
+  }
+  .ticket-header {
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px;
+  }
+  .ticket-header-right {
+    text-align: left;
+  }
+  .ticket-body {
+    padding: 16px;
+  }
+  .route-from h1,
+  .route-to h1 {
+    font-size: 28px;
+  }
+  .ticket-details {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .ticket-passenger-row {
+    flex-direction: column;
+    gap: 16px;
+  }
+  .ticket-qr {
+    width: 100%;
+    align-items: center;
+  }
+  .ticket-footer {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+    padding: 12px;
   }
 }

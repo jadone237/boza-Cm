@@ -229,3 +229,31 @@
 .btn-download:hover {
   opacity: 0.9;
 }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .email-container {
+    margin: 16px;
+    border-radius: 8px;
+  }
+  .email-banner {
+    padding: 24px 16px;
+  }
+  .email-content {
+    margin: 12px;
+    padding: 16px;
+  }
+  .ticket-box {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .btn-download {
+    width: 100%;
+    text-align: center;
+  }
+  .recap-item {
+    flex-direction: column;
+    gap: 4px;
+  }
+}
