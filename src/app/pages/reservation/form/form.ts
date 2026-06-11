@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
 import {
   ReactiveFormsModule,
   FormBuilder,
@@ -11,12 +10,11 @@ import {
 @Component({
   selector: 'app-form',
   standalone: true,
-  imports: [CommonModule, RouterLink, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './form.html',
   styleUrl: './form.css'
 })
 export class Form implements OnInit {
-
   reservationForm!: FormGroup;
   formSubmitted = false;
   isLoading = false;
@@ -26,18 +24,9 @@ export class Form implements OnInit {
 
   ngOnInit() {
     this.reservationForm = this.fb.group({
-      nomComplet: ['', [
-        Validators.required,
-        Validators.minLength(3)
-      ]],
-      email: ['', [
-        Validators.required,
-        Validators.email
-      ]],
-      telephone: ['', [
-        Validators.required,
-        Validators.pattern('^[0-9]{9}$')
-      ]]
+      nomComplet: ['', [Validators.required, Validators.minLength(3)]],
+      email: ['', [Validators.required, Validators.email]],
+      telephone: ['', [Validators.required, Validators.pattern('^[0-9]{9}$')]]
     });
   }
 
@@ -51,13 +40,8 @@ export class Form implements OnInit {
 
   onSubmit() {
     this.formSubmitted = true;
-
-    if (this.reservationForm.invalid) {
-      return;
-    }
-
+    if (this.reservationForm.invalid) return;
     this.isLoading = true;
-
     setTimeout(() => {
       this.isLoading = false;
       console.log('Réservation :', this.reservationForm.value);
