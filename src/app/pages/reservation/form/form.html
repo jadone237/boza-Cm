@@ -3,8 +3,8 @@
   <!-- NAVBAR -->
   <nav class="navbar">
     <div class="nav-logo">
-  <img src="logo.png" alt="BozaCM" class="logo-img"/>
-</div>
+      <img src="logo.png" alt="BozaCM" class="logo-img"/>
+    </div>
     <div class="nav-links">
       <a href="#" class="nav-link">Accueil</a>
       <a href="#" class="nav-link">Offres</a>
@@ -30,8 +30,8 @@
 
         <!-- Image du bus -->
         <div class="trip-image">
-            <img src="bus.jpg" alt="Bus VIP" class="trip-img"/>
-                   <span class="trip-badge">BUS VIP CLIMATISÉ</span>
+          <img src="bus.jpg" alt="Bus VIP" class="trip-img"/>
+          <span class="trip-badge">BUS VIP CLIMATISÉ</span>
         </div>
 
         <!-- Détails du trajet -->
@@ -74,40 +74,96 @@
 
         <!-- Sélection type transport -->
         <div class="transport-tabs">
-          <button class="tab active">🚌 Bus</button>
-          <button class="tab">🚂 Train</button>
-          <button class="tab">✈️ Avion</button>
+          <button class="tab" 
+            [class.active]="selectedTransport === 'bus'"
+            (click)="selectTransport('bus')">🚌 Bus</button>
+          <button class="tab"
+            [class.active]="selectedTransport === 'train'"
+            (click)="selectTransport('train')">🚂 Train</button>
+          <button class="tab"
+            [class.active]="selectedTransport === 'avion'"
+            (click)="selectTransport('avion')">✈️ Avion</button>
         </div>
 
-        <!-- Formulaire -->
-        <form class="passenger-form">
+        <!-- FORMULAIRE REACTIVE -->
+        <form class="passenger-form" 
+          [formGroup]="reservationForm" 
+          (ngSubmit)="onSubmit()">
 
+          <!-- NOM COMPLET -->
           <div class="form-group">
             <label>NOM COMPLET</label>
             <div class="input-wrapper">
-              <input type="text" placeholder="Entrez votre nom et prénom" class="form-input"/>
+              <input
+                type="text"
+                placeholder="Entrez votre nom et prénom"
+                class="form-input"
+                formControlName="nomComplet"
+                [class.input-error]="formSubmitted && f['nomComplet'].errors"/>
               <span class="input-icon">👤</span>
             </div>
+            @if (formSubmitted && f['nomComplet'].errors) {
+              <div class="error-message">
+                @if (f['nomComplet'].errors['required']) {
+                  <span>⚠️ Le nom complet est obligatoire</span>
+                }
+                @if (f['nomComplet'].errors['minlength']) {
+                  <span>⚠️ Minimum 3 caractères</span>
+                }
+              </div>
+            }
           </div>
 
+          <!-- EMAIL ET TÉLÉPHONE -->
           <div class="form-row">
             <div class="form-group">
               <label>EMAIL</label>
               <div class="input-wrapper">
-                <input type="email" placeholder="votre&#64;email.com" class="form-input"/>
+                <input
+                  type="email"
+                  placeholder="votre&#64;email.com"
+                  class="form-input"
+                  formControlName="email"
+                  [class.input-error]="formSubmitted && f['email'].errors"/>
                 <span class="input-icon">✉️</span>
               </div>
+              @if (formSubmitted && f['email'].errors) {
+                <div class="error-message">
+                  @if (f['email'].errors['required']) {
+                    <span>⚠️ L'email est obligatoire</span>
+                  }
+                  @if (f['email'].errors['email']) {
+                    <span>⚠️ Email invalide</span>
+                  }
+                </div>
+              }
             </div>
+
             <div class="form-group">
               <label>TÉLÉPHONE</label>
               <div class="input-wrapper">
-                <input type="tel" placeholder="+237 ..." class="form-input"/>
+                <input
+                  type="tel"
+                  placeholder="+237 ..."
+                  class="form-input"
+                  formControlName="telephone"
+                  [class.input-error]="formSubmitted && f['telephone'].errors"/>
                 <span class="input-icon">📱</span>
               </div>
+              @if (formSubmitted && f['telephone'].errors) {
+                <div class="error-message">
+                  @if (f['telephone'].errors['required']) {
+                    <span>⚠️ Le téléphone est obligatoire</span>
+                  }
+                  @if (f['telephone'].errors['pattern']) {
+                    <span>⚠️ 9 chiffres requis</span>
+                  }
+                </div>
+              }
             </div>
           </div>
 
-          <!-- Montant total -->
+          <!-- MONTANT TOTAL -->
           <div class="total-box">
             <div class="total-left">
               <small>Montant total</small>
@@ -118,9 +174,14 @@
             </div>
           </div>
 
-          <!-- Bouton confirmer -->
-          <button type="submit" class="btn-confirm">
-            ✅ Confirmer la réservation
+          <!-- BOUTON CONFIRMER AVEC SPINNER -->
+          <button type="submit" class="btn-confirm" [disabled]="isLoading">
+            @if (isLoading) {
+              <span class="spinner"></span>
+              Traitement en cours...
+            } @else {
+              ✅ Confirmer la réservation
+            }
           </button>
 
           <p class="form-terms">

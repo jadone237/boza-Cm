@@ -1,22 +1,22 @@
 <div class="admin-container">
 
-  <!-- ===== SIDEBAR (menu gauche) ===== -->
+  <!-- ===== SIDEBAR ===== -->
   <aside class="sidebar">
     <div class="sidebar-logo">
       <span class="logo-icon">🧳</span>
       <div>
         <h2>BozaCM</h2>
-        <small>PORTAIL DES DIRIGEANTS</small>
+        <small>EXECUTIVE PORTAL</small>
       </div>
     </div>
 
     <nav class="sidebar-nav">
-      <a href="#" class="nav-item">🏢 Agences</a>
-      <a href="#" class="nav-item">🗺️ Voyages</a>
-      <a href="#" class="nav-item">🏷️ Offres</a>
-      <a href="#" class="nav-item active">📋 Réservations</a>
-      <a href="#" class="nav-item">📊 Statistiques</a>
-      <a href="#" class="nav-item">📄 Raports</a>
+      <a href="#" class="nav-item">🏢 Agencies</a>
+      <a href="#" class="nav-item">🗺️ Trips</a>
+      <a href="#" class="nav-item">🏷️ Offers</a>
+      <a href="#" class="nav-item active">📋 Bookings</a>
+      <a href="#" class="nav-item">📊 Stats</a>
+      <a href="#" class="nav-item">📄 Reports</a>
     </nav>
 
     <div class="sidebar-user">
@@ -31,33 +31,33 @@
   <!-- ===== CONTENU PRINCIPAL ===== -->
   <main class="main-content">
 
-   <!-- HEADER -->
-<div class="page-header">
-  <h1>Réservations</h1>
-  <div class="header-actions">
-
-    <!-- Barre de recherche avec icône loupe -->
-    <div class="search-wrapper">
-      <span class="search-icon">🔍</span>
-      <input type="text" placeholder="Rechercher une réservation..." class="search-input"/>
-    </div>
-
-    <span class="icon-bell">🔔</span>
-    <span class="icon-settings">⚙️</span>
-
-    <!-- Info admin avec avatar -->
-    <div class="admin-info">
-      <div class="admin-right">
-        <div>
-          <span>Admin</span>
-          <small>BozaCM Executive</small>
+    <!-- HEADER -->
+    <div class="page-header">
+      <h1>Réservations</h1>
+      <div class="header-actions">
+        <div class="search-wrapper">
+          <span class="search-icon">🔍</span>
+          <!-- TEMPLATE-DRIVEN : [(ngModel)] lie le champ à searchText -->
+          <input
+            type="text"
+            placeholder="Rechercher une réservation..."
+            class="search-input"
+            [(ngModel)]="searchText"
+            name="search"/>
         </div>
-        <div class="admin-avatar">AD</div>
+        <span class="icon-bell">🔔</span>
+        <span class="icon-settings">⚙️</span>
+        <div class="admin-info">
+          <div class="admin-right">
+            <div>
+              <span>Admin</span>
+              <small>BozaCM Executive</small>
+            </div>
+            <div class="admin-avatar">AD</div>
+          </div>
+        </div>
       </div>
     </div>
-
-  </div>
-</div>
 
     <!-- STATISTIQUES -->
     <div class="stats-cards">
@@ -65,7 +65,7 @@
         <div class="stat-icon">📊</div>
         <div>
           <small>TOTAL</small>
-          <h2>34</h2>
+          <h2>{{ reservations.length }}</h2>
           <p>Volume global mensuel</p>
         </div>
       </div>
@@ -73,7 +73,7 @@
         <div class="stat-icon">✅</div>
         <div>
           <small>CONFIRMÉES</small>
-          <h2>20</h2>
+          <h2>{{ reservations | slice:0:reservations.length | json | slice:0:0 }}20</h2>
           <p>62% du volume total</p>
         </div>
       </div>
@@ -95,23 +95,33 @@
       </div>
     </div>
 
-    <!-- FILTRES -->
+    <!-- FILTRES TEMPLATE-DRIVEN -->
     <div class="filters">
-      <select class="filter-select">
-        <option>Tous statuts</option>
-        <option>Confirmée</option>
-        <option>En attente</option>
-        <option>Annulée</option>
+      <!-- [(ngModel)] = Two-Way Binding : lie le select à selectedStatut -->
+      <select
+        class="filter-select"
+        [(ngModel)]="selectedStatut"
+        name="statut">
+        <option value="tous">Tous statuts</option>
+        <option value="confirmee">Confirmée</option>
+        <option value="attente">En attente</option>
+        <option value="annulee">Annulée</option>
       </select>
-      <select class="filter-select">
-        <option>Tous types</option>
-        <option>Bus</option>
-        <option>Avion</option>
+
+      <!-- [(ngModel)] = Two-Way Binding : lie le select à selectedType -->
+      <select
+        class="filter-select"
+        [(ngModel)]="selectedType"
+        name="type">
+        <option value="tous">Tous types</option>
+        <option value="bus">Bus</option>
+        <option value="avion">Avion</option>
       </select>
+
       <button class="btn-new">+ Nouvelle Réservation</button>
     </div>
 
-    <!-- TABLEAU DES RESERVATIONS -->
+    <!-- TABLEAU -->
     <div class="table-container">
       <table class="reservations-table">
         <thead>
@@ -125,66 +135,69 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>
-              <div class="client-info">
-                <div class="avatar">SA</div>
-                <span>Serge Atangana</span>
-              </div>
-            </td>
-            <td>VIP Ydé → Dla</td>
-            <td><span class="type-badge">🚌 BUS</span></td>
-            <td>25/03/2026</td>
-            <td><span class="status confirmed">CONFIRMÉE</span></td>
-            <td>
-              <div class="actions-cell">
-                <button class="btn-billet">Billet</button>
-                <button class="btn-annuler">Annuler</button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div class="client-info">
-                <div class="avatar">FM</div>
-                <span>Florence Mvondo</span>
-              </div>
-            </td>
-            <td>Vol Dla → Garoua</td>
-            <td><span class="type-badge">✈️ AVION</span></td>
-            <td>26/03/2026</td>
-            <td><span class="status pending">EN ATTENTE</span></td>
-            <td>
-              <div class="actions-cell">
-                <button class="btn-confirmer">Confirmer</button>
-                <button class="btn-annuler">Annuler</button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div class="client-info">
-                <div class="avatar">EB</div>
-                <span>Estelle Beyala</span>
-              </div>
-            </td>
-            <td>Express Baf → Bda</td>
-            <td><span class="type-badge">🚌 BUS</span></td>
-            <td>28/03/2026</td>
-            <td><span class="status cancelled">ANNULÉE</span></td>
-            <td>
-              <div class="actions-cell">
-                <button class="btn-confirmer">Confirmer</button>
-                <button class="btn-annuler" disabled>Annuler</button>
-              </div>
-            </td>
-          </tr>
+          <!-- @for = boucle sur les réservations filtrées -->
+          @for (reservation of reservationsFiltrees; track reservation.id) {
+            <tr>
+              <td>
+                <div class="client-info">
+                  <div class="avatar">{{ reservation.avatar }}</div>
+                  <span>{{ reservation.client }}</span>
+                </div>
+              </td>
+              <td>{{ reservation.offre }}</td>
+              <td>
+                <span class="type-badge">
+                  {{ reservation.type === 'bus' ? '🚌' : '✈️' }}
+                  {{ reservation.type | uppercase }}
+                </span>
+              </td>
+              <td>{{ reservation.date }}</td>
+              <td>
+                <span class="status"
+                  [class.confirmed]="reservation.statut === 'confirmee'"
+                  [class.pending]="reservation.statut === 'attente'"
+                  [class.cancelled]="reservation.statut === 'annulee'">
+                  {{ reservation.statut === 'confirmee' ? 'CONFIRMÉE' :
+                     reservation.statut === 'attente' ? 'EN ATTENTE' : 'ANNULÉE' }}
+                </span>
+              </td>
+              <td>
+                <div class="actions-cell">
+                  @if (reservation.statut === 'confirmee') {
+                    <button class="btn-billet">Billet</button>
+                    <button class="btn-annuler"
+                      (click)="annuler(reservation.id)">Annuler</button>
+                  }
+                  @if (reservation.statut === 'attente') {
+                    <button class="btn-confirmer"
+                      (click)="confirmer(reservation.id)">Confirmer</button>
+                    <button class="btn-annuler"
+                      (click)="annuler(reservation.id)">Annuler</button>
+                  }
+                  @if (reservation.statut === 'annulee') {
+                    <button class="btn-confirmer"
+                      (click)="confirmer(reservation.id)">Confirmer</button>
+                    <button class="btn-annuler" disabled>Annuler</button>
+                  }
+                </div>
+              </td>
+            </tr>
+          }
+          <!-- Message si aucun résultat -->
+          @if (reservationsFiltrees.length === 0) {
+            <tr>
+              <td colspan="6" class="no-results">
+                Aucune réservation trouvée
+              </td>
+            </tr>
+          }
         </tbody>
       </table>
 
       <!-- PAGINATION -->
       <div class="pagination">
-        <span>Affichage de 1-3 sur 34 réservations</span>
+        <span>Affichage de 1-{{ reservationsFiltrees.length }}
+          sur {{ reservations.length }} réservations</span>
         <div class="pages">
           <button>‹</button>
           <button class="active">1</button>
