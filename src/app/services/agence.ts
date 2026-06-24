@@ -12,9 +12,9 @@ export class AgenceService {
   constructor(private http: HttpClient) {}
 
   // CRUD
-  getAllAgences(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/get_all`);
-  }
+ getAllAgences(): Observable<any> {
+  return this.http.get<any>(`${this.baseUrl}/get_all`);
+}
 
   getAllAgencesPaginated(page: number, size: number, sortBy: string): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/get_all_page?page=${page}&size=${size}&sortBy=${sortBy}`);
@@ -24,17 +24,16 @@ export class AgenceService {
     return this.http.get<any>(`${this.baseUrl}/get_by_id/${id}`);
   }
 
-  createAgence(agence: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/create`, agence);
-  }
+createAgence(agence: any): Observable<any> {
+  return this.http.post(`${this.baseUrl}/create`, agence, { responseType: 'text' });
+}
 
-  updateAgence(id: number, agence: any): Observable<any> {
-    return this.http.put(`${this.baseUrl}/update/${id}`, agence);
-  }
-
+ updateAgence(id: number, agence: any): Observable<any> {
+  return this.http.put(`${this.baseUrl}/update/${id}`, agence, { responseType: 'text' });
+}
   deleteAgence(id: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/delete/${id}`);
-  }
+  return this.http.delete(`${this.baseUrl}/delete/${id}`, { responseType: 'text' });
+}
 
   // Recherches
   getAgenceByEmail(email: string): Observable<any> {

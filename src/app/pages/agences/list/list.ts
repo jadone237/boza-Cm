@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AgenceService } from '../../../services/agence';
 
 @Component({
   selector: 'app-list',
@@ -10,44 +11,83 @@ import { Router } from '@angular/router';
   templateUrl: './list.html',
   styleUrl: './list.css',
 })
-export class List {
+export class List implements OnInit {
   recherche: string = '';
   isLoading: boolean = false;
+  errorMessage: string = '';
+  successMessage: string = '';
 
- agences = [
-  { id: 1, nom: 'Transcam Voyages', email: 'contact@transcam.cm', telephone: '691 234 567', initiales: 'TV' },
-  { id: 2, nom: 'Bamenda Express', email: 'info@bamenda.cm', telephone: '677 890 123', initiales: 'BE' },
-  { id: 3, nom: 'Camair-Co', email: 'booking@camairco.cm', telephone: '699 111 222', initiales: 'CC' },
-  { id: 4, nom: 'Sud Voyages', email: 'contact@sud.cm', telephone: '655 678 901', initiales: 'SV' },
-  { id: 5, nom: 'Nord Express', email: 'contact@nordexpress.cm', telephone: '677 123 456', initiales: 'NE' },
-  { id: 6, nom: 'Camrail', email: 'contact@camrail.cm', telephone: '677 000 111', initiales: 'CR' },
-];
+  agences: any[] = [];
+  agencesFiltrees: any[] = [];
+  agencesPaginees: any[] = [];
+
   page: number = 1;
   pageSize: number = 4;
+  totalPages: number = 0;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private agenceService: AgenceService,
+    private cd: ChangeDetectorRef
+  ) {}
 
-  get agencesFiltrees() {
-    return this.agences.filter(a =>
+  ngOnInit() {
+    this.chargerAgences();
+  }
+
+  chargerAgences() {
+    this.isLoading = true;
+    this.agenceService.getAllAgences().subscribe({
+      next: (data) => {
+        this.agences = data;
+        this.filtrer();
+        this.isLoading = false;
+        this.cd.detectChanges();
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.cd.detectChanges();
+        console.error(err);
+      }
+    });
+  }
+
+  filtrer() {
+    this.agencesFiltrees = this.agences.filter(a =>
       a.nom.toLowerCase().includes(this.recherche.toLowerCase())
     );
+    this.totalPages = Math.ceil(this.agencesFiltrees.length / this.pageSize);
+    this.paginer();
   }
 
-  get agencesPaginees() {
+  paginer() {
     const debut = (this.page - 1) * this.pageSize;
-    return this.agencesFiltrees.slice(debut, debut + this.pageSize);
+    this.agencesPaginees = this.agencesFiltrees.slice(debut, debut + this.pageSize);
   }
-
-  get totalPages() {
-    return Math.ceil(this.agencesFiltrees.length / this.pageSize);
-  }
+  allerPage(p: number) {
+  if (p < 1 || p > this.totalPages) return;
+  this.page = p;
+  this.paginer();
+}
 
   modifierAgence(id: number) {
     this.router.navigate(['/dashboard/agences/form', id]);
   }
 
   supprimerAgence(id: number) {
-    this.agences = this.agences.filter(a => a.id !== id);
+    if (confirm('Voulez-vous vraiment supprimer cette agence ?')) {
+      this.agenceService.deleteAgence(id).subscribe({
+        next: () => {
+          this.successMessage = 'Agence supprimée avec succès !';
+          this.chargerAgences();
+          setTimeout(() => this.successMessage = '', 3000);
+        },
+        error: (err) => {
+          this.errorMessage = 'Erreur lors de la suppression.';
+          console.error(err);
+        }
+      });
+    }
   }
 
   nouvelleAgence() {

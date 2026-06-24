@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { AgenceService } from '../../../services/agence';
 
 @Component({
   selector: 'app-form',
@@ -14,26 +15,40 @@ export class Form implements OnInit {
   isEditMode: boolean = false;
   isLoading: boolean = false;
   successMessage: string = '';
+  errorMessage: string = '';
+  agenceId: number | null = null;
 
   agenceForm = new FormGroup({
     nom: new FormControl('', [Validators.required, Validators.minLength(3)]),
     email: new FormControl('', [Validators.required, Validators.email]),
-    telephone: new FormControl('', [Validators.required, Validators.pattern('^[0-9 ]{9,13}$')]),
+    telephone: new FormControl('', [Validators.required]),
     adresse: new FormControl('', [Validators.required]),
   });
 
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private agenceService: AgenceService
+  ) {}
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.isEditMode = true;
-      // Simuler le chargement des données
-      this.agenceForm.patchValue({
-        nom: 'Transcam Voyages',
-        email: 'contact@transcam.cm',
-        telephone: '691 234 567',
-        adresse: 'Yaoundé, Cameroun',
+      this.agenceId = +id;
+      this.agenceService.getAgenceById(this.agenceId).subscribe({
+        next: (data) => {
+          this.agenceForm.patchValue({
+            nom: data.nom,
+            email: data.email,
+            telephone: data.telephone,
+            adresse: data.adresse,
+          });
+        },
+        error: (err) => {
+          this.errorMessage = 'Erreur lors du chargement de l\'agence.';
+          console.error(err);
+        }
       });
     }
   }
@@ -49,11 +64,35 @@ export class Form implements OnInit {
       return;
     }
     this.isLoading = true;
-    setTimeout(() => {
-      this.isLoading = false;
-      this.successMessage = this.isEditMode ? 'Agence modifiée avec succès !' : 'Agence créée avec succès !';
-      setTimeout(() => this.router.navigate(['/dashboard/agences']), 1500);
-    }, 1000);
+    this.errorMessage = '';
+
+    if (this.isEditMode && this.agenceId) {
+      this.agenceService.updateAgence(this.agenceId, this.agenceForm.value).subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.successMessage = 'Agence modifiée avec succès !';
+          setTimeout(() => this.router.navigate(['/dashboard/agences']), 1500);
+        },
+        error: (err) => {
+          this.isLoading = false;
+          this.errorMessage = 'Erreur lors de la modification.';
+          console.error(err);
+        }
+      });
+    } else {
+      this.agenceService.createAgence(this.agenceForm.value).subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.successMessage = 'Agence créée avec succès !';
+          setTimeout(() => this.router.navigate(['/dashboard/agences']), 1500);
+        },
+        error: (err) => {
+          this.isLoading = false;
+          this.errorMessage = 'Erreur lors de la création.';
+          console.error(err);
+        }
+      });
+    }
   }
 
   annuler() {
