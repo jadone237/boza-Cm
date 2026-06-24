@@ -40,4 +40,7 @@ export class TrajetService {
   getTrajetsByRoute(depart: string, arrivee: string): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/search/route/${depart}/${arrivee}`);
   }
+  rechercher(terme: string): Observable<any> {
+  return this.http.get<any>(`${this.baseUrl}/search/${terme}`);
+} 
 }

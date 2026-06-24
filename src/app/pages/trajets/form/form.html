@@ -14,6 +14,12 @@
     {{ successMessage }}
   </div>
 
+  <!-- ERROR -->
+  <div class="alert alert-danger d-flex align-items-center gap-2" *ngIf="errorMessage">
+    <i class="bi bi-exclamation-triangle"></i>
+    {{ errorMessage }}
+  </div>
+
   <!-- FORMULAIRE -->
   <div class="card border shadow-sm" style="max-width: 600px;">
     <div class="card-body">
@@ -21,36 +27,23 @@
 
         <div class="mb-3">
           <label class="form-label fw-semibold">Ville de départ *</label>
-          <input type="text" class="form-control" formControlName="depart" placeholder="Ex: Douala"/>
-          <div class="text-danger small mt-1" *ngIf="depart?.invalid && depart?.touched">
-            Le départ est obligatoire (minimum 3 caractères)
+          <input type="text" class="form-control" formControlName="villeDepart" placeholder="Ex: Douala"/>
+          <div class="text-danger small mt-1" *ngIf="villeDepart?.invalid && villeDepart?.touched">
+            Le départ est obligatoire (minimum 2 caractères)
           </div>
         </div>
 
         <div class="mb-3">
           <label class="form-label fw-semibold">Ville d'arrivée *</label>
-          <input type="text" class="form-control" formControlName="arrivee" placeholder="Ex: Yaoundé"/>
-          <div class="text-danger small mt-1" *ngIf="arrivee?.invalid && arrivee?.touched">
-            L'arrivée est obligatoire (minimum 3 caractères)
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label fw-semibold">Type de transport *</label>
-          <select class="form-select" formControlName="type">
-            <option value="">-- Choisir un type --</option>
-            <option value="Bus">Bus</option>
-            <option value="Avion">Avion</option>
-            <option value="Train">Train</option>
-          </select>
-          <div class="text-danger small mt-1" *ngIf="type?.invalid && type?.touched">
-            Veuillez choisir un type de transport
+          <input type="text" class="form-control" formControlName="villeArrivee" placeholder="Ex: Yaoundé"/>
+          <div class="text-danger small mt-1" *ngIf="villeArrivee?.invalid && villeArrivee?.touched">
+            L'arrivée est obligatoire (minimum 2 caractères)
           </div>
         </div>
 
         <div class="mb-4">
           <label class="form-label fw-semibold">Durée du trajet *</label>
-          <input type="text" class="form-control" formControlName="duree" placeholder="Ex: 3h 45min"/>
+          <input type="text" class="form-control" formControlName="duree" placeholder="Ex: 3h30"/>
           <div class="text-danger small mt-1" *ngIf="duree?.invalid && duree?.touched">
             La durée est obligatoire
           </div>

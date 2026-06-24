@@ -1,12 +1,22 @@
 <div class="container-fluid p-4">
-
+  
+<!-- MESSAGES -->
+  <div class="alert alert-success d-flex align-items-center gap-2" *ngIf="successMessage">
+    <i class="bi bi-check-circle"></i>
+    {{ successMessage }}
+  </div>
+  <div class="alert alert-danger d-flex align-items-center gap-2" *ngIf="errorMessage">
+    <i class="bi bi-exclamation-triangle"></i>
+    {{ errorMessage }}
+  </div>
+  
   <!-- HEADER -->
   <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
     <h5 class="fw-bold mb-0">Gestion des trajets</h5>
     <div class="d-flex gap-2 align-items-center flex-wrap">
       <div class="input-group input-group-sm" style="width:220px">
         <span class="input-group-text"><i class="bi bi-search"></i></span>
-        <input type="text" class="form-control" placeholder="Rechercher un trajet..." [(ngModel)]="recherche" name="recherche"/>
+        <input type="text" class="form-control" placeholder="Rechercher un trajet..." [(ngModel)]="recherche" name="recherche" (ngModelChange)="onRecherche()"/>
       </div>
       <button class="btn btn-sm btn-success" (click)="nouveauTrajet()">
         <i class="bi bi-plus-lg"></i> Nouveau trajet
@@ -16,7 +26,7 @@
 
   <!-- STATS -->
   <div class="row g-3 mb-4">
-<div class="col-sm-3">
+    <div class="col-sm-6">
       <div class="card border shadow-sm">
         <div class="card-body d-flex align-items-center gap-3">
           <i class="bi bi-signpost-2 fs-2 text-secondary"></i>
@@ -27,24 +37,13 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-3">
-      <div class="card border shadow-sm">
-        <div class="card-body d-flex align-items-center gap-3">
-          <i class="bi bi-bus-front fs-2 text-secondary"></i>
-          <div>
-            <div class="text-uppercase text-muted" style="font-size:11px; letter-spacing:1px;">Types transport</div>
-            <div class="fw-bold fs-3">{{ totalTypes }}</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-3">
+    <div class="col-sm-6">
       <div class="card border shadow-sm">
         <div class="card-body d-flex align-items-center gap-3">
           <i class="bi bi-building fs-2 text-secondary"></i>
           <div>
             <div class="text-uppercase text-muted" style="font-size:11px; letter-spacing:1px;">Villes desservies</div>
-            <div class="fw-bold fs-3">{{ totalVilles }}</div>
+            <div class="fw-bold fs-3">{{ trajets.length }}</div>
           </div>
         </div>
       </div>
@@ -62,7 +61,6 @@
           <tr>
             <th class="ps-3">Départ</th>
             <th>Arrivée</th>
-            <th>Type</th>
             <th class="hide-mobile">Durée</th>
             <th>Actions</th>
           </tr>
@@ -70,32 +68,20 @@
         <tbody>
           <tr *ngFor="let trajet of trajetsPagines">
             <td class="ps-3">
-              <i class="bi bi-geo-alt text-muted me-1"></i>{{ trajet.depart }}
+              <i class="bi bi-geo-alt text-muted me-1"></i>{{ trajet.villeDepart }}
             </td>
             <td>
-              <i class="bi bi-geo-alt text-muted me-1"></i>{{ trajet.arrivee }}
+              <i class="bi bi-geo-alt text-muted me-1"></i>{{ trajet.villeArrivee }}
             </td>
+            <td class="hide-mobile">{{ trajet.duree }}</td>
             <td>
-              <span class="badge" [ngClass]="{
-                'text-bg-primary': trajet.type === 'Bus',
-                'text-bg-warning': trajet.type === 'Avion',
-                'text-bg-danger': trajet.type === 'Train'
-              }">
-                <i class="bi me-1" [ngClass]="{
-                  'bi-bus-front': trajet.type === 'Bus',
-                  'bi-airplane': trajet.type === 'Avion',
-                  'bi-train-front': trajet.type === 'Train'
-                }"></i>{{ trajet.type }}
-              </span>
+              <button class="btn btn-sm btn-outline-primary me-1" (click)="modifierTrajet(trajet.id)">
+                <i class="bi bi-pencil-square"></i> <span class="hide-mobile"></span>
+              </button>
+              <button class="btn btn-sm btn-outline-danger" (click)="supprimerTrajet(trajet.id)">
+                <i class="bi bi-trash3"></i> <span class="hide-mobile"></span>
+              </button>
             </td>
-           <td>
-  <button class="btn btn-sm btn-outline-primary me-1" (click)="modifierTrajet(trajet.id)">
-    <i class="bi bi-pencil-square"></i> <span class="hide-mobile">Modifier</span>
-  </button>
-  <button class="btn btn-sm btn-outline-danger" (click)="supprimerTrajet(trajet.id)">
-    <i class="bi bi-trash3"></i> <span class="hide-mobile">Supprimer</span>
-  </button>
-</td>
           </tr>
         </tbody>
       </table>
@@ -108,15 +94,15 @@
       </small>
       <ul class="pagination pagination-sm mb-0">
         <li class="page-item" [class.disabled]="page === 1">
-          <a class="page-link" (click)="page = page - 1">‹</a>
+          <a class="page-link" (click)="allerPage(page - 1)">‹</a>
         </li>
         <li class="page-item"
           *ngFor="let p of [].constructor(totalPages); let i = index"
           [class.active]="page === i + 1">
-          <a class="page-link" (click)="page = i + 1">{{ i + 1 }}</a>
+          <a class="page-link" (click)="allerPage(i + 1)">{{ i + 1 }}</a>
         </li>
         <li class="page-item" [class.disabled]="page === totalPages">
-          <a class="page-link" (click)="page = page + 1">›</a>
+          <a class="page-link" (click)="allerPage(page + 1)">›</a>
         </li>
       </ul>
     </div>
@@ -124,21 +110,21 @@
 
   <!-- COUVERTURE RESEAU -->
   <div class="row g-3 mt-2">
-    <div class="col-md-7">
-      <div class="card border shadow-sm">
+    <div class="col-sm-7">
+      <div class="card border shadow-sm h-100">
         <div class="card-body">
           <h6 class="mb-3">
             <i class="bi bi-map me-2"></i>Couverture réseau
           </h6>
           <div class="bg-light rounded d-flex align-items-center justify-content-center" style="height: 250px; overflow: hidden;">
-            <img src="assets/cameroun.jpg"
+            <img src="cameroun.jpg"
                  alt="Carte du Cameroun"
                  style="max-height: 100%; max-width: 100%; object-fit: contain; opacity: 0.7;"/>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-md-5">
+    <div class="col-sm-5">
       <div class="card border-0 shadow-sm h-100 text-white" style="background-color: #0d1f3c;">
         <div class="card-body d-flex flex-column justify-content-between">
           <div>

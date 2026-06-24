@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { TrajetService } from '../../../services/trajet';
 
 @Component({
   selector: 'app-list',
@@ -10,50 +11,90 @@ import { Router } from '@angular/router';
   templateUrl: './list.html',
   styleUrl: './list.css',
 })
-export class List {
+export class List implements OnInit {
   recherche: string = '';
+  isLoading: boolean = false;
+  errorMessage: string = '';
+  successMessage: string = '';
+
+  trajets: any[] = [];
+  trajetsFiltres: any[] = [];
+  trajetsPagines: any[] = [];
+
   page: number = 1;
   pageSize: number = 4;
+  totalPages: number = 0;
 
-  trajets = [
-  { id: 1, depart: 'Douala Bonabéri', arrivee: 'Yaoundé Mvan', type: 'Bus', duree: '3h 50min' },
-  { id: 2, depart: 'Douala', arrivee: 'Garoua', type: 'Avion', duree: '1h 20min' },
-  { id: 3, depart: 'Yaoundé', arrivee: 'Bafoussam', type: 'Bus', duree: '5h 15min' },
-  { id: 4, depart: 'Ngaoundéré', arrivee: 'Douala', type: 'Train', duree: '14h 00min' },
-  { id: 5, depart: 'Yaoundé', arrivee: 'Ngaoundéré', type: 'Train', duree: '13h 30min' },
-  { id: 6, depart: 'Douala', arrivee: 'Limbé', type: 'Bus', duree: '1h 45min' },
-  { id: 7, depart: 'Bafoussam', arrivee: 'Bamenda', type: 'Bus', duree: '2h 30min' },
-  { id: 8, depart: 'Douala', arrivee: 'Maroua', type: 'Avion', duree: '2h 05min' },
-];
+  constructor(
+    private router: Router,
+    private trajetService: TrajetService,
+    private cd: ChangeDetectorRef
+  ) {}
 
-  constructor(private router: Router) {}
-
-  get totalTypes() {
-    return new Set(this.trajets.map(t => t.type)).size;
+  ngOnInit() {
+    this.chargerTrajets();
   }
 
-  get totalVilles() {
-    return new Set([
-      ...this.trajets.map(t => t.depart),
-      ...this.trajets.map(t => t.arrivee)
-    ]).size;
+  chargerTrajets() {
+    this.isLoading = true;
+    this.trajetService.getAllTrajets().subscribe({
+      next: (data) => {
+        this.trajets = data;
+        this.preparerAffichage();
+        this.isLoading = false;
+        this.cd.detectChanges();
+      },
+      error: (err) => {
+        this.errorMessage = 'Erreur lors du chargement des trajets.';
+        this.isLoading = false;
+        this.cd.detectChanges();
+        console.error(err);
+      }
+    });
   }
 
-  get trajetsFiltres() {
-    return this.trajets.filter(t =>
-      t.depart.toLowerCase().includes(this.recherche.toLowerCase()) ||
-      t.arrivee.toLowerCase().includes(this.recherche.toLowerCase())
-    );
+  preparerAffichage() {
+    this.trajetsFiltres = this.trajets;
+    this.totalPages = Math.ceil(this.trajetsFiltres.length / this.pageSize);
+    this.paginer();
   }
 
-  get trajetsPagines() {
+  paginer() {
     const debut = (this.page - 1) * this.pageSize;
-    return this.trajetsFiltres.slice(debut, debut + this.pageSize);
+    this.trajetsPagines = this.trajetsFiltres.slice(debut, debut + this.pageSize);
   }
 
-  get totalPages() {
-    return Math.ceil(this.trajetsFiltres.length / this.pageSize);
+  allerPage(p: number) {
+    if (p < 1 || p > this.totalPages) return;
+    this.page = p;
+    this.paginer();
   }
+  onRecherche() {
+  this.page = 1;
+  const terme = this.recherche.trim();
+
+  if (terme === '') {
+    this.chargerTrajets();
+    return;
+  }
+
+  this.isLoading = true;
+  this.trajetService.rechercher(terme).subscribe({
+    next: (data) => {
+      this.trajets = data;
+      this.preparerAffichage();
+      this.isLoading = false;
+      this.cd.detectChanges();
+    },
+    error: (err) => {
+      this.trajets = [];
+      this.preparerAffichage();
+      this.isLoading = false;
+      this.cd.detectChanges();
+      console.error(err);
+    }
+  });
+}
 
   nouveauTrajet() {
     this.router.navigate(['/dashboard/trajets/form']);
@@ -64,6 +105,20 @@ export class List {
   }
 
   supprimerTrajet(id: number) {
-    this.trajets = this.trajets.filter(t => t.id !== id);
+    if (confirm('Voulez-vous vraiment supprimer ce trajet ?')) {
+      this.trajetService.deleteTrajet(id).subscribe({
+        next: () => {
+          this.successMessage = 'Trajet supprimé avec succès !';
+          this.chargerTrajets();
+          setTimeout(() => this.successMessage = '', 3000);
+        },
+       error: (err) => {
+          this.errorMessage = 'Impossible de supprimer ce trajet : il est lié à une ou plusieurs offres.';
+          this.cd.detectChanges();
+          console.error(err);
+          setTimeout(() => { this.errorMessage = ''; this.cd.detectChanges(); }, 4000);
+        }
+      });
+    }
   }
 }

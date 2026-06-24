@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { TrajetService } from '../../../services/trajet';
 
 @Component({
   selector: 'app-form',
@@ -14,32 +15,44 @@ export class Form implements OnInit {
   isEditMode: boolean = false;
   isLoading: boolean = false;
   successMessage: string = '';
+  errorMessage: string = '';
+  trajetId: number | null = null;
 
   trajetForm = new FormGroup({
-    depart: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    arrivee: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    type: new FormControl('', [Validators.required]),
+    villeDepart: new FormControl('', [Validators.required, Validators.minLength(2)]),
+    villeArrivee: new FormControl('', [Validators.required, Validators.minLength(2)]),
     duree: new FormControl('', [Validators.required]),
   });
 
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private trajetService: TrajetService
+  ) {}
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.isEditMode = true;
-      this.trajetForm.patchValue({
-        depart: 'Douala Bonabéri',
-        arrivee: 'Yaoundé Mvan',
-        type: 'Bus',
-        duree: '3h 50min',
+      this.trajetId = +id;
+      this.trajetService.getTrajetById(this.trajetId).subscribe({
+        next: (data) => {
+          this.trajetForm.patchValue({
+            villeDepart: data.villeDepart,
+            villeArrivee: data.villeArrivee,
+            duree: data.duree,
+          });
+        },
+        error: (err) => {
+          this.errorMessage = 'Erreur lors du chargement du trajet.';
+          console.error(err);
+        }
       });
     }
   }
 
-  get depart() { return this.trajetForm.get('depart'); }
-  get arrivee() { return this.trajetForm.get('arrivee'); }
-  get type() { return this.trajetForm.get('type'); }
+  get villeDepart() { return this.trajetForm.get('villeDepart'); }
+  get villeArrivee() { return this.trajetForm.get('villeArrivee'); }
   get duree() { return this.trajetForm.get('duree'); }
 
   onSubmit() {
@@ -48,11 +61,35 @@ export class Form implements OnInit {
       return;
     }
     this.isLoading = true;
-    setTimeout(() => {
-      this.isLoading = false;
-      this.successMessage = this.isEditMode ? 'Trajet modifié avec succès !' : 'Trajet créé avec succès !';
-      setTimeout(() => this.router.navigate(['/dashboard/trajets']), 1500);
-    }, 1000);
+    this.errorMessage = '';
+
+    if (this.isEditMode && this.trajetId) {
+      this.trajetService.updateTrajet(this.trajetId, this.trajetForm.value).subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.successMessage = 'Trajet modifié avec succès !';
+          setTimeout(() => this.router.navigate(['/dashboard/trajets']), 1500);
+        },
+        error: (err) => {
+          this.isLoading = false;
+          this.errorMessage = 'Erreur lors de la modification.';
+          console.error(err);
+        }
+      });
+    } else {
+      this.trajetService.createTrajet(this.trajetForm.value).subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.successMessage = 'Trajet créé avec succès !';
+          setTimeout(() => this.router.navigate(['/dashboard/trajets']), 1500);
+        },
+        error: (err) => {
+          this.isLoading = false;
+          this.errorMessage = 'Erreur lors de la création.';
+          console.error(err);
+        }
+      });
+    }
   }
 
   annuler() {

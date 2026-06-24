@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RapportService } from '../../services/rapport';
 
 @Component({
   selector: 'app-rapports',
@@ -8,36 +9,69 @@ import { CommonModule } from '@angular/common';
   templateUrl: './rapports.html',
   styleUrl: './rapports.css',
 })
-export class Rapports {
+export class Rapports implements OnInit {
 
-  stats = [
-    { label: 'Agences', valeur: 5, icon: 'bi-building' },
-    { label: 'Trajets', valeur: 8, icon: 'bi-signpost-2' },
-    { label: 'Offres', valeur: 12, icon: 'bi-collection' },
-    { label: 'Réservations', valeur: 34, icon: 'bi-ticket-perforated' },
-    { label: 'Confirmées', valeur: 20, icon: 'bi-check-circle' },
-    { label: 'Annulées', valeur: 4, icon: 'bi-x-circle' },
-  ];
+  isLoading: boolean = false;
+  errorMessage: string = '';
 
-  topPerformances = [
-    { label: 'Offre la plus réservée', valeur: 'VIP Yaoundé → Douala', chiffre: 17, unite: 'réservations' },
-    { label: 'Agence la plus active', valeur: 'Transcam Voyages', chiffre: 85000, unite: 'FCFA' },
-    { label: 'Trajet le plus emprunté', valeur: 'Yaoundé → Douala', chiffre: 20, unite: 'fois' },
-  ];
+  rapport: any = null;
 
-  taux = [
-    { label: 'Confirmé', valeur: 60, couleur: 'bg-success' },
-    { label: 'En attente', valeur: 25, couleur: 'bg-warning' },
-    { label: 'Annulé', valeur: 15, couleur: 'bg-danger' },
-  ];
+  stats: any[] = [];
+  topPerformances: any[] = [];
+  taux: any[] = [];
+  chiffreAffaires: number = 0;
 
-  chiffreAffaires: number = 185000;
+  constructor(
+    private rapportService: RapportService,
+    private cd: ChangeDetectorRef
+  ) {}
 
-  exporterBilan() {
-    alert('Export du bilan en cours...');
+  ngOnInit() {
+    this.chargerRapport();
   }
 
-  detailsParAgence() {
-    alert('Détails par agence en cours...');
+  chargerRapport() {
+    this.isLoading = true;
+    this.errorMessage = '';
+    this.rapportService.getRapportGlobal().subscribe({
+      next: (data) => {
+        this.rapport = data;
+        this.preparerDonnees(data);
+        this.isLoading = false;
+        this.cd.detectChanges();
+      },
+      error: (err) => {
+        this.errorMessage = 'Erreur lors du chargement du rapport.';
+        this.isLoading = false;
+        this.cd.detectChanges();
+        console.error(err);
+      }
+    });
+  }
+
+  preparerDonnees(data: any) {
+    this.stats = [
+      { label: 'Agences', valeur: data.totalAgences, icon: 'bi-building' },
+      { label: 'Trajets', valeur: data.totalTrajets, icon: 'bi-signpost-2' },
+      { label: 'Offres', valeur: data.totalOffres, icon: 'bi-collection' },
+      { label: 'Réservations', valeur: data.totalReservations, icon: 'bi-ticket-perforated' },
+      { label: 'Confirmées', valeur: data.totalConfirmees, icon: 'bi-check-circle' },
+      { label: 'Annulées', valeur: data.totalAnnulees, icon: 'bi-x-circle' },
+    ];
+
+    this.topPerformances = [
+      { label: 'Offre la plus réservée', valeur: data.offreLaPlusReservee, icon: 'bi-star' },
+      { label: 'Agence la plus active', valeur: data.agenceLaPlusActive, icon: 'bi-trophy' },
+      { label: 'Trajet le plus emprunté', valeur: data.trajetLePlusEmprunte, icon: 'bi-geo-alt' },
+    ];
+
+    const total = data.totalReservations || 1;
+    this.taux = [
+      { label: 'Confirmé', valeur: Math.round((data.totalConfirmees / total) * 100), couleur: 'bg-success' },
+      { label: 'En attente', valeur: Math.round((data.totalEnAttente / total) * 100), couleur: 'bg-warning' },
+      { label: 'Annulé', valeur: Math.round((data.totalAnnulees / total) * 100), couleur: 'bg-danger' },
+    ];
+
+    this.chiffreAffaires = data.chiffreAffairesTotal;
   }
 }
