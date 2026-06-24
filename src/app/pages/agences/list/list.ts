@@ -69,6 +69,38 @@ export class List implements OnInit {
   this.page = p;
   this.paginer();
 }
+preparerAffichage() {
+  this.agencesFiltrees = this.agences;
+  this.totalPages = Math.ceil(this.agencesFiltrees.length / this.pageSize);
+  this.paginer();
+}
+
+onRecherche() {
+  this.page = 1;
+  const terme = this.recherche.trim();
+
+  if (terme === '') {
+    this.chargerAgences();
+    return;
+  }
+
+  this.isLoading = true;
+  this.agenceService.rechercher(terme).subscribe({
+    next: (data) => {
+      this.agences = data;
+      this.preparerAffichage();
+      this.isLoading = false;
+      this.cd.detectChanges();
+    },
+    error: (err) => {
+      this.agences = [];
+      this.preparerAffichage();
+      this.isLoading = false;
+      this.cd.detectChanges();
+      console.error(err);
+    }
+  });
+}
 
   modifierAgence(id: number) {
     this.router.navigate(['/dashboard/agences/form', id]);

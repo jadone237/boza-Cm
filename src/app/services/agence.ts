@@ -43,6 +43,9 @@ createAgence(agence: any): Observable<any> {
   getAgencesByVille(ville: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/search/ville/${ville}`);
   }
+  rechercher(terme: string): Observable<any> {
+  return this.http.get<any>(`${this.baseUrl}/search/${terme}`);
+}
 
   // Statistiques
   getClassementAgences(): Observable<any[]> {

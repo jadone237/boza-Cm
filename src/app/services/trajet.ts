@@ -5,47 +5,39 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class OffreService {
+export class TrajetService {
 
-  private baseUrl = 'http://localhost:8080/api/v1/offres';
+  private baseUrl = 'http://localhost:8080/api/v1/trajets';
 
   constructor(private http: HttpClient) {}
 
   // CRUD
-  getAllOffres(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/get_all`);
+  getAllTrajets(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/get_all`);
   }
 
-  getAllOffresPaginated(page: number, size: number, sortBy: string): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/get_all_page?page=${page}&size=${size}&sortBy=${sortBy}`);
-  }
-
-  getOffreById(id: number): Observable<any> {
+  getTrajetById(id: number): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/get_by_id/${id}`);
   }
 
-  createOffre(offre: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/create`, offre);
+  createTrajet(trajet: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/create`, trajet, { responseType: 'text' });
   }
 
-  updateOffre(id: number, offre: any): Observable<any> {
-    return this.http.put(`${this.baseUrl}/update/${id}`, offre);
+  updateTrajet(id: number, trajet: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/update/${id}`, trajet, { responseType: 'text' });
   }
 
-  deleteOffre(id: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/delete/${id}`);
+  deleteTrajet(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/delete/${id}`, { responseType: 'text' });
   }
 
-  // Recherche multicritère
-  rechercherOffres(criteres: any): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/recherche`, { params: criteres });
+  // Recherches
+  getTrajetsByDepart(depart: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/search/depart/${depart}`);
   }
 
-  getOffresByPrixRange(min: number, max: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/search/prix/${min}/${max}`);
-  }
-
-  getOffresByAgence(agenceId: number): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/search/agence/${agenceId}`);
+  getTrajetsByRoute(depart: string, arrivee: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/search/route/${depart}/${arrivee}`);
   }
 }

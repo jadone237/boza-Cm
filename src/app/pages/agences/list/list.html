@@ -65,7 +65,7 @@
       <h6 class="mb-0">Liste des agences partenaires</h6>
       <div class="input-group input-group-sm" style="width: 220px;">
         <span class="input-group-text"><i class="bi bi-search"></i></span>
-        <input type="text" class="form-control" placeholder="Rechercher une agence..." [(ngModel)]="recherche" name="recherche"/>
+        <input type="text" class="form-control" placeholder="Rechercher une agence..." [(ngModel)]="recherche" name="recherche" (ngModelChange)="onRecherche()"/>
       </div>
     </div>
 
@@ -82,9 +82,10 @@
         <thead class="table-light">
           <tr>
             <th class="ps-4">Nom de l'agence</th>
-            <th class="hide-mobile">Email professionnel</th>
+<th class="hide-mobile">Email professionnel</th>
 <th class="hide-mobile">Téléphone</th>
-            <th class="text-end pe-4">Actions</th>
+<th class="hide-mobile">Adresse</th>
+<th class="text-end pe-4">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -100,6 +101,7 @@
             </td>
            <td class="hide-mobile">{{ agence.email }}</td>
 <td class="hide-mobile">{{ agence.telephone }}</td>
+            <td class="hide-mobile">{{ agence.adresse }}</td>
             <td class="text-end pe-4">
               <button class="btn btn-sm btn-outline-primary me-1" (click)="modifierAgence(agence.id)">
                 <i class="bi bi-pencil-square"></i>
