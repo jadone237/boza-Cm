@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { AgenceService } from '../../services/agence';
 
 @Component({
   selector: 'app-statistiques',
@@ -8,31 +9,56 @@ import { CommonModule } from '@angular/common';
   templateUrl: './statistiques.html',
   styleUrl: './statistiques.css',
 })
-export class Statistiques {
+export class Statistiques implements OnInit {
 
-  stats = [
-    { label: 'Agences', valeur: 5, evolution: '+2%', icon: 'bi-building' },
-    { label: 'Réservations', valeur: 34, evolution: '+12%', icon: 'bi-ticket-perforated' },
-    { label: 'Confirmées', valeur: 20, evolution: '74%', icon: 'bi-check-circle' },
-    { label: 'CA (FCFA)', valeur: 185000, evolution: '+8.5K', icon: 'bi-cash-stack' },
-  ];
+  classement: any[] = [];
+  maxReservations = 1; // évite la division par zéro
+  chargement = true;
 
-  classement = [
-    { rang: 1, nom: 'Transcam Voyages', description: 'Service Premium', ca: 85000, taux: 94 },
-    { rang: 2, nom: 'Camair-Co', description: 'Lignes Nationales', ca: 62000, taux: 88 },
-    { rang: 3, nom: 'Bamenda Express', description: 'Transport Rapide', ca: 38000, taux: 72 },
-  ];
+  // Cartes de statistiques globales (calculées à partir du classement)
+  totalAgences = 0;
+  totalReservations = 0;
+  totalConfirmees = 0;
+  chiffreAffairesTotal = 0;
 
-  reservationsParAgence = [
-    { agence: 'Transcam Voyages', total: 17 },
-    { agence: 'Camair-Co', total: 12 },
-    { agence: 'Bamenda Express', total: 8 },
-    { agence: 'Sud Voyages', total: 4 },
-  ];
+  constructor(
+    private agenceService: AgenceService,
+    private cd: ChangeDetectorRef
+  ) {}
 
-  maxReservations = 17;
+  ngOnInit(): void {
+    this.chargerClassement();
+  }
+
+  chargerClassement(): void {
+    this.chargement = true;
+    this.agenceService.getClassementAgences().subscribe({
+      next: (data) => {
+        this.classement = data || [];
+        this.calculerTotaux();
+        this.chargement = false;
+        this.cd.detectChanges();
+      },
+      error: (err) => {
+        console.error('Erreur lors du chargement du classement', err);
+        this.chargement = false;
+        this.cd.detectChanges();
+      }
+    });
+  }
+
+  calculerTotaux(): void {
+    this.totalAgences = this.classement.length;
+    this.totalReservations = this.classement.reduce((s, a) => s + (a.nombreReservationsTotal || 0), 0);
+    this.totalConfirmees = this.classement.reduce((s, a) => s + (a.nombreReservationsConfirmees || 0), 0);
+    this.chiffreAffairesTotal = this.classement.reduce((s, a) => s + (a.chiffreAffaire || 0), 0);
+
+    // Pour les barres de progression : la plus grande valeur de réservations
+    const max = Math.max(...this.classement.map(a => a.nombreReservationsTotal || 0), 1);
+    this.maxReservations = max;
+  }
 
   getBarWidth(total: number): string {
-    return (total / this.maxReservations * 100) + '%';
+    return ((total || 0) / this.maxReservations * 100) + '%';
   }
 }
