@@ -269,22 +269,6 @@
   appearance: auto;
 }
 
-.btn-new {
-  margin-left: auto;
-  padding: 10px 20px;
-  background-color: #172554;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
-  transition: background 0.2s;
-}
-
-.btn-new:hover {
-  background-color: #1e3a6e;
-}
 
 /* ===== TABLEAU ===== */
 .table-container {
@@ -612,10 +596,6 @@
   }
   .filter-select {
     flex: 1;
-  }
-  .btn-new {
-    width: 100%;
-    margin-left: 0;
   }
   .table-container {
     overflow-x: auto;

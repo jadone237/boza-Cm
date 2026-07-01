@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import {
   ReactiveFormsModule,
   FormBuilder,
@@ -15,12 +16,16 @@ import {
   styleUrl: './form.css'
 })
 export class Form implements OnInit {
+
   reservationForm!: FormGroup;
   formSubmitted = false;
   isLoading = false;
   selectedTransport = 'bus';
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.reservationForm = this.fb.group({
@@ -44,7 +49,7 @@ export class Form implements OnInit {
     this.isLoading = true;
     setTimeout(() => {
       this.isLoading = false;
-      console.log('Réservation :', this.reservationForm.value);
+      this.router.navigate(['/confirmation']);
     }, 2000);
   }
 }
