@@ -1,0 +1,64 @@
+<div class="container-fluid p-4">
+
+  <!-- HEADER -->
+  <div class="d-flex align-items-center gap-3 mb-4">
+    <button class="btn btn-sm btn-outline-secondary" (click)="annuler()">
+      <i class="bi bi-arrow-left"></i>
+    </button>
+    <h5 class="mb-0 fw-bold">{{ isEditMode ? 'Modifier un trajet' : 'Nouveau trajet' }}</h5>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="alert alert-success d-flex align-items-center gap-2" *ngIf="successMessage">
+    <i class="bi bi-check-circle"></i>
+    {{ successMessage }}
+  </div>
+
+  <!-- ERROR -->
+  <div class="alert alert-danger d-flex align-items-center gap-2" *ngIf="errorMessage">
+    <i class="bi bi-exclamation-triangle"></i>
+    {{ errorMessage }}
+  </div>
+
+  <!-- FORMULAIRE -->
+  <div class="card border shadow-sm" style="max-width: 600px;">
+    <div class="card-body">
+      <form [formGroup]="trajetForm" (ngSubmit)="onSubmit()">
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Ville de départ *</label>
+          <input type="text" class="form-control" formControlName="villeDepart" placeholder="Ex: Douala"/>
+          <div class="text-danger small mt-1" *ngIf="villeDepart?.invalid && villeDepart?.touched">
+            Le départ est obligatoire (minimum 2 caractères)
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Ville d'arrivée *</label>
+          <input type="text" class="form-control" formControlName="villeArrivee" placeholder="Ex: Yaoundé"/>
+          <div class="text-danger small mt-1" *ngIf="villeArrivee?.invalid && villeArrivee?.touched">
+            L'arrivée est obligatoire (minimum 2 caractères)
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label fw-semibold">Durée du trajet *</label>
+          <input type="text" class="form-control" formControlName="duree" placeholder="Ex: 3h30"/>
+          <div class="text-danger small mt-1" *ngIf="duree?.invalid && duree?.touched">
+            La durée est obligatoire
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2">
+          <button type="button" class="btn btn-outline-secondary" (click)="annuler()">Annuler</button>
+          <button type="submit" class="btn btn-success" [disabled]="isLoading">
+            <span class="spinner-border spinner-border-sm me-1" *ngIf="isLoading"></span>
+            {{ isLoading ? 'Enregistrement...' : (isEditMode ? 'Modifier' : 'Créer') }}
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+</div>

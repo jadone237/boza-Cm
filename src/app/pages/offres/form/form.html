@@ -1,0 +1,96 @@
+
+<div class="container-fluid p-4">
+
+  <!-- HEADER -->
+  <div class="d-flex align-items-center gap-3 mb-4">
+    <button class="btn btn-sm btn-outline-secondary" (click)="annuler()">
+      <i class="bi bi-arrow-left"></i>
+    </button>
+    <h5 class="mb-0 fw-bold">{{ isEditMode ? 'Modifier une offre' : 'Nouvelle offre' }}</h5>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="alert alert-success d-flex align-items-center gap-2" *ngIf="successMessage">
+    <i class="bi bi-check-circle"></i>
+    {{ successMessage }}
+  </div>
+
+  <!-- FORMULAIRE -->
+  <div class="card border shadow-sm" style="max-width: 600px;">
+    <div class="card-body">
+      <form [formGroup]="offreForm" (ngSubmit)="onSubmit()">
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Titre de l'offre *</label>
+          <input type="text" class="form-control" formControlName="titre" placeholder="Ex: VIP Yaoundé → Douala"/>
+          <div class="text-danger small mt-1" *ngIf="titre?.invalid && titre?.touched">
+            Le titre est obligatoire (minimum 5 caractères)
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Type de transport *</label>
+          <select class="form-select" formControlName="type">
+            <option value="">-- Choisir un type --</option>
+            <option value="Bus">Bus</option>
+            <option value="Avion">Avion</option>
+            <option value="Train">Train</option>
+          </select>
+          <div class="text-danger small mt-1" *ngIf="type?.invalid && type?.touched">
+            Veuillez choisir un type
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Agence *</label>
+          <select class="form-select" formControlName="agence">
+            <option value="">-- Choisir une agence --</option>
+            <option value="Transcam Voyages">Transcam Voyages</option>
+            <option value="Bamenda Express">Bamenda Express</option>
+            <option value="Camair-Co">Camair-Co</option>
+            <option value="Sud Voyages">Sud Voyages</option>
+            <option value="Camrail">Camrail</option>
+          </select>
+          <div class="text-danger small mt-1" *ngIf="agence?.invalid && agence?.touched">
+            Veuillez choisir une agence
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label fw-semibold">Prix (FCFA) *</label>
+            <input type="number" class="form-control" formControlName="prix" placeholder="Ex: 15000"/>
+            <div class="text-danger small mt-1" *ngIf="prix?.invalid && prix?.touched">
+              Le prix est obligatoire
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label fw-semibold">Places disponibles *</label>
+            <input type="number" class="form-control" formControlName="places" placeholder="Ex: 12"/>
+            <div class="text-danger small mt-1" *ngIf="places?.invalid && places?.touched">
+              Minimum 1 place
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label fw-semibold">Heure de départ *</label>
+          <input type="time" class="form-control" formControlName="depart"/>
+          <div class="text-danger small mt-1" *ngIf="depart?.invalid && depart?.touched">
+            L'heure de départ est obligatoire
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2">
+          <button type="button" class="btn btn-outline-secondary" (click)="annuler()">Annuler</button>
+          <button type="submit" class="btn btn-success" [disabled]="isLoading">
+            <span class="spinner-border spinner-border-sm me-1" *ngIf="isLoading"></span>
+            {{ isLoading ? 'Enregistrement...' : (isEditMode ? 'Modifier' : 'Créer') }}
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+</div>
