@@ -36,14 +36,14 @@ export class Form implements OnInit {
       this.isEditMode = true;
       this.trajetId = +id;
       this.trajetService.getTrajetById(this.trajetId).subscribe({
-        next: (data) => {
+        next: (data: any) => {
           this.trajetForm.patchValue({
             villeDepart: data.villeDepart,
             villeArrivee: data.villeArrivee,
             duree: data.duree,
           });
         },
-        error: (err) => {
+        error: (err: any) => {
           this.errorMessage = 'Erreur lors du chargement du trajet.';
           console.error(err);
         }
@@ -70,7 +70,7 @@ export class Form implements OnInit {
           this.successMessage = 'Trajet modifié avec succès !';
           setTimeout(() => this.router.navigate(['/dashboard/trajets']), 1500);
         },
-        error: (err) => {
+        error: (err: any) => {
           this.isLoading = false;
           this.errorMessage = 'Erreur lors de la modification.';
           console.error(err);
@@ -83,7 +83,7 @@ export class Form implements OnInit {
           this.successMessage = 'Trajet créé avec succès !';
           setTimeout(() => this.router.navigate(['/dashboard/trajets']), 1500);
         },
-        error: (err) => {
+        error: (err: any) => {
           this.isLoading = false;
           this.errorMessage = 'Erreur lors de la création.';
           console.error(err);

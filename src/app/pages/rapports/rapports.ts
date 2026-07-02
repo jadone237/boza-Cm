@@ -34,13 +34,13 @@ export class Rapports implements OnInit {
     this.isLoading = true;
     this.errorMessage = '';
     this.rapportService.getRapportGlobal().subscribe({
-      next: (data) => {
+      next: (data: any) => {{
         this.rapport = data;
         this.preparerDonnees(data);
         this.isLoading = false;
         this.cd.detectChanges();
       },
-      error: (err) => {
+      error: (err: any) => {
         this.errorMessage = 'Erreur lors du chargement du rapport.';
         this.isLoading = false;
         this.cd.detectChanges();

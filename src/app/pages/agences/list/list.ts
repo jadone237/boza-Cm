@@ -38,13 +38,13 @@ export class List implements OnInit {
   chargerAgences() {
     this.isLoading = true;
     this.agenceService.getAllAgences().subscribe({
-      next: (data) => {
+      next: (data: any) => {
         this.agences = data;
         this.filtrer();
         this.isLoading = false;
         this.cd.detectChanges();
       },
-      error: (err) => {
+      error: (err: any) => {
         this.isLoading = false;
         this.cd.detectChanges();
         console.error(err);
@@ -86,13 +86,13 @@ onRecherche() {
 
   this.isLoading = true;
   this.agenceService.rechercher(terme).subscribe({
-    next: (data) => {
+    next: (data: any) => {
       this.agences = data;
       this.preparerAffichage();
       this.isLoading = false;
       this.cd.detectChanges();
     },
-    error: (err) => {
+    error: (err: any) => {
       this.agences = [];
       this.preparerAffichage();
       this.isLoading = false;
@@ -114,7 +114,7 @@ onRecherche() {
           this.chargerAgences();
           setTimeout(() => this.successMessage = '', 3000);
         },
-        error: (err) => {
+        error: (err: any) => {
           this.errorMessage = 'Erreur lors de la suppression.';
           console.error(err);
         }

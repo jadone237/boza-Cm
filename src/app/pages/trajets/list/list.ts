@@ -38,13 +38,13 @@ export class List implements OnInit {
   chargerTrajets() {
     this.isLoading = true;
     this.trajetService.getAllTrajets().subscribe({
-      next: (data) => {
+      next: (data: any) => {
         this.trajets = data;
         this.preparerAffichage();
         this.isLoading = false;
         this.cd.detectChanges();
       },
-      error: (err) => {
+      error: (err: any) => {
         this.errorMessage = 'Erreur lors du chargement des trajets.';
         this.isLoading = false;
         this.cd.detectChanges();
@@ -80,13 +80,13 @@ export class List implements OnInit {
 
   this.isLoading = true;
   this.trajetService.rechercher(terme).subscribe({
-    next: (data) => {
+    next: (data: any) => {
       this.trajets = data;
       this.preparerAffichage();
       this.isLoading = false;
       this.cd.detectChanges();
     },
-    error: (err) => {
+    error: (err: any) => {
       this.trajets = [];
       this.preparerAffichage();
       this.isLoading = false;
@@ -112,7 +112,7 @@ export class List implements OnInit {
           this.chargerTrajets();
           setTimeout(() => this.successMessage = '', 3000);
         },
-       error: (err) => {
+       error: (err: any) => {
           this.errorMessage = 'Impossible de supprimer ce trajet : il est lié à une ou plusieurs offres.';
           this.cd.detectChanges();
           console.error(err);

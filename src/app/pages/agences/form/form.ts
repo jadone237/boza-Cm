@@ -37,7 +37,7 @@ export class Form implements OnInit {
       this.isEditMode = true;
       this.agenceId = +id;
       this.agenceService.getAgenceById(this.agenceId).subscribe({
-        next: (data) => {
+        next: (data: any) => {{
           this.agenceForm.patchValue({
             nom: data.nom,
             email: data.email,
@@ -45,7 +45,7 @@ export class Form implements OnInit {
             adresse: data.adresse,
           });
         },
-        error: (err) => {
+        error: (err: any) => {
           this.errorMessage = 'Erreur lors du chargement de l\'agence.';
           console.error(err);
         }
@@ -73,7 +73,7 @@ export class Form implements OnInit {
           this.successMessage = 'Agence modifiée avec succès !';
           setTimeout(() => this.router.navigate(['/dashboard/agences']), 1500);
         },
-        error: (err) => {
+        error: (err: any) => {
           this.isLoading = false;
           this.errorMessage = 'Erreur lors de la modification.';
           console.error(err);
@@ -86,7 +86,7 @@ export class Form implements OnInit {
           this.successMessage = 'Agence créée avec succès !';
           setTimeout(() => this.router.navigate(['/dashboard/agences']), 1500);
         },
-        error: (err) => {
+        error: (err: any) => {
           this.isLoading = false;
           this.errorMessage = 'Erreur lors de la création.';
           console.error(err);
