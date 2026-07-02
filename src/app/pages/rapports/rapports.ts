@@ -34,7 +34,7 @@ export class Rapports implements OnInit {
     this.isLoading = true;
     this.errorMessage = '';
     this.rapportService.getRapportGlobal().subscribe({
-      next: (data: any) => {{
+      next: (data: any) => {
         this.rapport = data;
         this.preparerDonnees(data);
         this.isLoading = false;

@@ -36,7 +36,7 @@ export class Form implements OnInit {
       this.isEditMode = true;
       this.trajetId = +id;
       this.trajetService.getTrajetById(this.trajetId).subscribe({
-        next: (data: any) => {
+        next: (data: any) => { => {
           this.trajetForm.patchValue({
             villeDepart: data.villeDepart,
             villeArrivee: data.villeArrivee,
