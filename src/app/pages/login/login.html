@@ -1,83 +1,109 @@
-<div class="page-wrapper">
-  <!-- HEADER CARD -->
-  <div class="login-container">
-    <div class="login-header">
-      <h1>🚌 BozaCM ✈️</h1>
-      <p>Découvrez le Cameroun en 1 clic.</p>
+<div class="d-flex align-items-center justify-content-center min-vh-100" style="background: linear-gradient(135deg, #0d1f3c 0%, #1a3a6b 100%);">
+  <div class="card p-4 shadow-lg border-0" style="width: 100%; max-width: 420px; border-radius: 16px;">
+    
+    <!-- En-tête / Logo -->
+    <div class="text-center mb-3">
+      <h2 class="fw-bold mb-1" style="color: #0d1f3c; letter-spacing: -1px;">BozaCM</h2>
+      <p class="text-muted small text-uppercase fw-semibold" style="letter-spacing: 1px; font-size: 11px;">Plateforme d'administration</p>
     </div>
 
-    <!-- TABS -->
-    <div class="login-body">
-      <div class="tabs">
-        <button
-          [class.active]="activeTab === 'admin'"
-          (click)="switchTab('admin')">
-          Administrateur
-        </button>
-        <button
-          [class.active]="activeTab === 'client'"
-          (click)="switchTab('client')">
-          Client
-        </button>
+    <!-- Onglets de connexion (Bootstrap) -->
+    <div class="d-flex p-1 bg-light rounded-3 mb-4">
+      <button 
+        type="button" 
+        class="btn btn-sm flex-grow-1 py-2 fw-semibold transition-all"
+        [ngClass]="activeTab === 'admin' ? 'btn-white shadow-sm text-dark' : 'text-muted'"
+        style="border-radius: 8px; border: none; font-size: 13px;"
+        (click)="switchTab('admin')"
+      >
+        <i class="bi bi-shield-lock me-1"></i> Administrateur
+      </button>
+      <button 
+        type="button" 
+        class="btn btn-sm flex-grow-1 py-2 fw-semibold transition-all"
+        [ngClass]="activeTab === 'client' ? 'btn-white shadow-sm text-dark' : 'text-muted'"
+        style="border-radius: 8px; border: none; font-size: 13px;"
+        (click)="switchTab('client')"
+      >
+        <i class="bi bi-person me-1"></i> Client / Voyageur
+      </button>
+    </div>
+
+    <!-- Message d'erreur éventuel -->
+    <div *ngIf="errorMessage" class="alert alert-danger d-flex align-items-center gap-2 py-2 px-3 small rounded-3 mb-3">
+      <i class="bi bi-exclamation-triangle-fill fs-6"></i>
+      <span>{{ errorMessage }}</span>
+    </div>
+
+    <!-- Formulaire de Connexion -->
+    <form (ngSubmit)="onSubmit()">
+      
+      <!-- Champ E-mail -->
+      <div class="mb-3">
+        <label class="form-label text-muted small fw-bold text-uppercase" style="font-size: 10px;">Adresse E-mail</label>
+        <div class="input-group">
+          <span class="input-group-text bg-light border-end-0 text-muted" style="border-radius: 8px 0 0 8px;">
+            <i class="bi bi-envelope fs-6"></i>
+          </span>
+          <input 
+            type="email" 
+            class="form-control bg-light border-start-0 py-2" 
+            style="border-radius: 0 8px 8px 0; font-size: 14px;"
+            placeholder="Ex: nom@bozacm.cm" 
+            [(ngModel)]="email" 
+            name="email" 
+            required
+          />
+        </div>
       </div>
 
-      <!-- FORMULAIRE -->
-      <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
-
-        <div class="form-group">
-          <label>EMAIL</label>
-          <input
-            type="email"
-            name="email"
-            [(ngModel)]="email"
+      <!-- Champ Mot de passe -->
+      <div class="mb-4">
+        <label class="form-label text-muted small fw-bold text-uppercase" style="font-size: 10px;">Mot de passe</label>
+        <div class="input-group">
+          <span class="input-group-text bg-light border-end-0 text-muted" style="border-radius: 8px 0 0 8px;">
+            <i class="bi bi-lock fs-6"></i>
+          </span>
+          <input 
+            [type]="showPassword ? 'text' : 'password'" 
+            class="form-control bg-light border-start-0 border-end-0 py-2" 
+            style="font-size: 14px;"
+            placeholder="••••••••" 
+            [(ngModel)]="password" 
+            name="password" 
             required
-            email
-            [placeholder]="activeTab === 'admin' ? 'admin@bozacm.cm' : 'client@bozacm.cm'"
-            #emailField="ngModel"/>
-          <span class="error" *ngIf="emailField.invalid && emailField.touched">
-            Email invalide
+          />
+          <span 
+            class="input-group-text bg-light border-start-0 text-muted" 
+            style="border-radius: 0 8px 8px 0; cursor: pointer;"
+            (click)="togglePassword()"
+          >
+            <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
           </span>
         </div>
+      </div>
 
-        <div class="form-group">
-          <label>MOT DE PASSE</label>
-          <div class="password-wrapper">
-            <input
-              [type]="showPassword ? 'text' : 'password'"
-              name="password"
-              [(ngModel)]="password"
-              required
-              minlength="6"
-              #passwordField="ngModel"/>
-            <span class="toggle-pwd" (click)="togglePassword()">
-              {{ showPassword ? '🙈' : '👁️' }}
-            </span>
-          </div>
-          <span class="error" *ngIf="passwordField.invalid && passwordField.touched">
-            Minimum 6 caractères
-          </span>
+      <!-- Option Se souvenir de moi / Mot de passe oublié -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="rememberMe" style="cursor: pointer;">
+          <label class="form-check-label text-muted small" for="rememberMe" style="cursor: pointer; user-select: none;">
+            Se souvenir de moi
+          </label>
         </div>
+        <a class="text-decoration-none small fw-semibold" style="color: #0d9488; cursor: pointer;">Mot de passe oublié ?</a>
+      </div>
 
-        <span class="error" *ngIf="errorMessage">{{ errorMessage }}</span>
+      <!-- Bouton Se connecter stylisé Bootstrap (Sans isLoading) -->
+      <button 
+        type="submit" 
+        class="btn w-100 fw-bold py-2 d-flex align-items-center justify-content-center gap-2 text-white" 
+        style="background-color: #0d1f3c; border-radius: 8px; font-size: 15px; transition: background-color 0.2s;"
+      >
+        <i class="bi bi-box-arrow-in-right fs-5"></i>
+        <span>Se connecter en tant qu'{{ activeTab === 'admin' ? 'Admin' : 'Client' }}</span>
+      </button>
 
-        <button type="button" class="btn-submit" (click)="onSubmit()">Se connecter</button>
-
-      </form>
-
-      <p class="register-link">
-        Pas de compte ? <a href="#">S'inscrire</a>
-      </p>
-    </div>
+    </form>
   </div>
-
-  <!-- FOOTER -->
-  <footer class="login-footer">
-    <span>BozaCM</span>
-    <span>© 2024 BozaCM. Découvrez le Cameroun en 1 clic.</span>
-    <div>
-      <a href="#">Contact</a>
-      <a href="#">Conditions d'utilisation</a>
-      <a href="#">Confidentialité</a>
-    </div>
-  </footer>
 </div>

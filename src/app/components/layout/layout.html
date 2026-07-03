@@ -1,34 +1,75 @@
-<div class="app-container">
+<div class="d-flex" style="min-height: 100vh;">
+  <!-- BARRE LATÉRALE (SIDEBAR) -->
+  <aside class="bg-white border-end d-flex flex-column justify-content-between p-3" style="width: 280px; min-height: 100vh;">
+    <div>
+      <!-- En-tête de la plateforme -->
+      <div class="ps-3 py-4">
+        <h4 class="fw-bold mb-1" style="color: #0d1f3c; letter-spacing: -0.5px;">BozaCM</h4>
+        <span class="text-muted text-uppercase fw-bold" style="font-size: 9px; letter-spacing: 0.8px;">Plateforme d'administration</span>
+      </div>
 
-  <aside class="sidebar">
-    <div class="sidebar-header">
-      <h2>BozaCM</h2>
-      <span>PLATEFORME D'ADMINISTRATION</span>
+      <!-- Liens de Navigation -->
+      <ul class="nav nav-pills flex-column gap-1 px-1">
+        <li class="nav-item">
+          <a [routerLink]="['/dashboard/agences']" routerLinkActive="active-sidebar-link" class="nav-link text-dark d-flex align-items-center gap-3 py-2 px-3 rounded">
+            <i class="bi bi-building fs-5"></i>
+            <span class="fw-medium">Agences</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/dashboard/trajets']" routerLinkActive="active-sidebar-link" class="nav-link text-dark d-flex align-items-center gap-3 py-2 px-3 rounded">
+            <i class="bi bi-signpost-2 fs-5"></i>
+            <span class="fw-medium">Trajets</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/dashboard/offres']" routerLinkActive="active-sidebar-link" class="nav-link text-dark d-flex align-items-center gap-3 py-2 px-3 rounded">
+            <i class="bi bi-tags fs-5"></i>
+            <span class="fw-medium">Offres</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/dashboard/reservations']" routerLinkActive="active-sidebar-link" class="nav-link text-dark d-flex align-items-center gap-3 py-2 px-3 rounded">
+            <i class="bi bi-ticket-perforated fs-5"></i>
+            <span class="fw-medium">Réservations</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/dashboard/statistiques']" routerLinkActive="active-sidebar-link" class="nav-link text-dark d-flex align-items-center gap-3 py-2 px-3 rounded">
+            <i class="bi bi-bar-chart-line fs-5"></i>
+            <span class="fw-medium">Statistiques</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/dashboard/rapports']" routerLinkActive="active-sidebar-link" class="nav-link text-dark d-flex align-items-center gap-3 py-2 px-3 rounded">
+            <i class="bi bi-file-earmark-text fs-5"></i>
+            <span class="fw-medium">Rapports</span>
+          </a>
+        </li>
+      </ul>
     </div>
-<nav class="sidebar-nav">
-  <a *ngFor="let item of menuItems"
-    [routerLink]="item.route"
-    routerLinkActive="active"
-    class="nav-item">
-    <i class="bi {{ item.icon }} nav-icon"></i>
-    <span class="nav-label">{{ item.label }}</span>
-  </a>
-</nav>
 
-    <div class="sidebar-footer">
-      <a class="nav-item" routerLink="/dashboard/parametres">
-        <span class="nav-icon">⚙️</span>
-        <span class="nav-label">Paramètres</span>
-      </a>
-      <a class="nav-item logout" (click)="logout()" style="cursor:pointer;">
-        <span class="nav-icon">🚪</span>
-        <span class="nav-label">Déconnexion</span>
-      </a>
+    <!-- Pied de la barre latérale (Paramètres & Déconnexion) -->
+    <div class="border-top pt-3 px-1">
+      <ul class="nav flex-column gap-1">
+        <li class="nav-item">
+          <a [routerLink]="['/dashboard/parametres']" routerLinkActive="active-sidebar-link" class="nav-link text-dark d-flex align-items-center gap-3 py-2 px-3 rounded">
+            <i class="bi bi-gear fs-5"></i>
+            <span class="fw-medium">Paramètres</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a (click)="logout()" class="nav-link text-danger d-flex align-items-center gap-3 py-2 px-3 rounded" style="cursor: pointer;">
+            <i class="bi bi-box-arrow-right fs-5"></i>
+            <span class="fw-bold">Déconnexion</span>
+          </a>
+        </li>
+      </ul>
     </div>
   </aside>
 
-  <main class="main-content">
-    <router-outlet />
+  <!-- CONTENU PRINCIPAL DE L'ADMINISTRATION -->
+  <main class="flex-grow-1 bg-light p-4" style="overflow-y: auto; max-height: 100vh;">
+    <router-outlet></router-outlet>
   </main>
-
 </div>

@@ -38,6 +38,8 @@ export const routes: Routes = [
       { path: 'reservations', loadComponent: () => import('./pages/reservation/list/list').then(m => m.List) },
       { path: 'statistiques', loadComponent: () => import('./pages/statistiques/statistiques').then(m => m.Statistiques) },
       { path: 'rapports', loadComponent: () => import('./pages/rapports/rapports').then(m => m.Rapports) },
+      { path: 'reservations/form', loadComponent: () => import('./pages/reservation/form/form').then(m => m.Form) },
+      { path: 'reservations/form/:id', loadComponent: () => import('./pages/reservation/form/form').then(m => m.Form) },
     ]
   },
 ];
