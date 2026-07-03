@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -14,7 +14,6 @@ import { AgenceService } from '../../../services/agence';
 export class Form implements OnInit {
   isEditMode: boolean = false;
   isLoading: boolean = false;
-  successMessage: string = '';
   errorMessage: string = '';
   agenceId: number | null = null;
 
@@ -28,7 +27,8 @@ export class Form implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private agenceService: AgenceService
+    private agenceService: AgenceService,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -37,16 +37,18 @@ export class Form implements OnInit {
       this.isEditMode = true;
       this.agenceId = +id;
       this.agenceService.getAgenceById(this.agenceId).subscribe({
-        next: (data) => {
+        next: (agence) => {
           this.agenceForm.patchValue({
-            nom: data.nom,
-            email: data.email,
-            telephone: data.telephone,
-            adresse: data.adresse,
+            nom: agence.nom,
+            email: agence.email,
+            telephone: agence.telephone,
+            adresse: agence.adresse,
           });
+          this.cd.detectChanges();
         },
         error: (err) => {
           this.errorMessage = 'Erreur lors du chargement de l\'agence.';
+          this.cd.detectChanges();
           console.error(err);
         }
       });
@@ -70,12 +72,12 @@ export class Form implements OnInit {
       this.agenceService.updateAgence(this.agenceId, this.agenceForm.value).subscribe({
         next: () => {
           this.isLoading = false;
-          this.successMessage = 'Agence modifiée avec succès !';
-          setTimeout(() => this.router.navigate(['/dashboard/agences']), 1500);
+          this.router.navigate(['/dashboard/agences'], { state: { message: 'Agence modifiée avec succès !' } });
         },
         error: (err) => {
           this.isLoading = false;
-          this.errorMessage = 'Erreur lors de la modification.';
+          this.errorMessage = this.extraireMessageErreur(err, 'Erreur lors de la modification de l\'agence.');
+          this.cd.detectChanges();
           console.error(err);
         }
       });
@@ -83,16 +85,26 @@ export class Form implements OnInit {
       this.agenceService.createAgence(this.agenceForm.value).subscribe({
         next: () => {
           this.isLoading = false;
-          this.successMessage = 'Agence créée avec succès !';
-          setTimeout(() => this.router.navigate(['/dashboard/agences']), 1500);
+          this.router.navigate(['/dashboard/agences'], { state: { message: 'Agence créée avec succès !' } });
         },
         error: (err) => {
           this.isLoading = false;
-          this.errorMessage = 'Erreur lors de la création.';
+          this.errorMessage = this.extraireMessageErreur(err, 'Erreur lors de la création de l\'agence.');
+          this.cd.detectChanges();
           console.error(err);
         }
       });
     }
+  }
+
+  private extraireMessageErreur(err: any, messageParDefaut: string): string {
+    if (err?.error?.message) {
+      return err.error.message;
+    }
+    if (typeof err?.error === 'string' && err.error.length > 0) {
+      return err.error;
+    }
+    return messageParDefaut;
   }
 
   annuler() {

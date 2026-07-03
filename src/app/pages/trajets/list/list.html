@@ -1,9 +1,9 @@
 <div class="container-fluid p-4">
   
 <!-- MESSAGES -->
-  <div class="alert alert-success d-flex align-items-center gap-2" *ngIf="successMessage">
-    <i class="bi bi-check-circle"></i>
-    {{ successMessage }}
+  <div class="alert alert-success d-flex align-items-center gap-2" *ngIf="notification">
+    <i class="bi bi-check-circle-fill"></i>
+    {{ notification }}
   </div>
   <div class="alert alert-danger d-flex align-items-center gap-2" *ngIf="errorMessage">
     <i class="bi bi-exclamation-triangle"></i>

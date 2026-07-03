@@ -25,13 +25,12 @@ export class OffreService {
   }
 
   createOffre(offre: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/create`, offre);
+    return this.http.post(`${this.baseUrl}/create`, offre, { responseType: 'text' });
   }
 
   updateOffre(id: number, offre: any): Observable<any> {
-    return this.http.put(`${this.baseUrl}/update/${id}`, offre);
+    return this.http.put(`${this.baseUrl}/update/${id}`, offre, { responseType: 'text' });
   }
-
   deleteOffre(id: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/delete/${id}`);
   }

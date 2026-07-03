@@ -7,10 +7,10 @@
 
 <div class="form-container">
 
-  <div class="success-message" *ngIf="successMessage">
-    ✅ {{ successMessage }}
-  </div>
-
+  <div class="alert alert-danger d-flex align-items-center gap-2" *ngIf="errorMessage">
+  <i class="bi bi-exclamation-triangle"></i>
+  {{ errorMessage }}
+</div>
   <form [formGroup]="agenceForm" (ngSubmit)="onSubmit()">
 
     <div class="form-group">

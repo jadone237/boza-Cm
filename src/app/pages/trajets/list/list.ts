@@ -16,6 +16,7 @@ export class List implements OnInit {
   isLoading: boolean = false;
   errorMessage: string = '';
   successMessage: string = '';
+    notification: string = '';
 
   trajets: any[] = [];
   trajetsFiltres: any[] = [];
@@ -25,14 +26,22 @@ export class List implements OnInit {
   pageSize: number = 4;
   totalPages: number = 0;
 
-  constructor(
+ constructor(
     private router: Router,
     private trajetService: TrajetService,
     private cd: ChangeDetectorRef
-  ) {}
-
+  ) {
+    const nav = this.router.getCurrentNavigation();
+    const state = nav?.extras?.state as { message?: string } | undefined;
+    if (state?.message) {
+      this.notification = state.message;
+    }
+  }
   ngOnInit() {
-    this.chargerTrajets();
+    if (this.notification) {
+      setTimeout(() => { this.notification = ''; this.cd.detectChanges(); }, 3000);
+    }
+    this.chargerTrajets(); 
   }
 
   chargerTrajets() {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -14,7 +14,6 @@ import { TrajetService } from '../../../services/trajet';
 export class Form implements OnInit {
   isEditMode: boolean = false;
   isLoading: boolean = false;
-  successMessage: string = '';
   errorMessage: string = '';
   trajetId: number | null = null;
 
@@ -27,7 +26,8 @@ export class Form implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private trajetService: TrajetService
+    private trajetService: TrajetService,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -42,9 +42,11 @@ export class Form implements OnInit {
             villeArrivee: data.villeArrivee,
             duree: data.duree,
           });
+          this.cd.detectChanges();
         },
         error: (err) => {
           this.errorMessage = 'Erreur lors du chargement du trajet.';
+          this.cd.detectChanges();
           console.error(err);
         }
       });
@@ -67,12 +69,12 @@ export class Form implements OnInit {
       this.trajetService.updateTrajet(this.trajetId, this.trajetForm.value).subscribe({
         next: () => {
           this.isLoading = false;
-          this.successMessage = 'Trajet modifié avec succès !';
-          setTimeout(() => this.router.navigate(['/dashboard/trajets']), 1500);
+          this.router.navigate(['/dashboard/trajets'], { state: { message: 'Trajet modifié avec succès !' } });
         },
         error: (err) => {
           this.isLoading = false;
-          this.errorMessage = 'Erreur lors de la modification.';
+          this.errorMessage = this.extraireMessageErreur(err, 'Erreur lors de la modification du trajet.');
+          this.cd.detectChanges();
           console.error(err);
         }
       });
@@ -80,16 +82,26 @@ export class Form implements OnInit {
       this.trajetService.createTrajet(this.trajetForm.value).subscribe({
         next: () => {
           this.isLoading = false;
-          this.successMessage = 'Trajet créé avec succès !';
-          setTimeout(() => this.router.navigate(['/dashboard/trajets']), 1500);
+          this.router.navigate(['/dashboard/trajets'], { state: { message: 'Trajet créé avec succès !' } });
         },
         error: (err) => {
           this.isLoading = false;
-          this.errorMessage = 'Erreur lors de la création.';
+          this.errorMessage = this.extraireMessageErreur(err, 'Erreur lors de la création du trajet.');
+          this.cd.detectChanges();
           console.error(err);
         }
       });
     }
+  }
+
+  private extraireMessageErreur(err: any, messageParDefaut: string): string {
+    if (err?.error?.message) {
+      return err.error.message;
+    }
+    if (typeof err?.error === 'string' && err.error.length > 0) {
+      return err.error;
+    }
+    return messageParDefaut;
   }
 
   annuler() {

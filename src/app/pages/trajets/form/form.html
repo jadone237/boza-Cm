@@ -8,11 +8,6 @@
     <h5 class="mb-0 fw-bold">{{ isEditMode ? 'Modifier un trajet' : 'Nouveau trajet' }}</h5>
   </div>
 
-  <!-- SUCCESS -->
-  <div class="alert alert-success d-flex align-items-center gap-2" *ngIf="successMessage">
-    <i class="bi bi-check-circle"></i>
-    {{ successMessage }}
-  </div>
 
   <!-- ERROR -->
   <div class="alert alert-danger d-flex align-items-center gap-2" *ngIf="errorMessage">
@@ -21,7 +16,7 @@
   </div>
 
   <!-- FORMULAIRE -->
-  <div class="card border shadow-sm" style="max-width: 600px;">
+  <div class="card border shadow-sm mx-auto" style="max-width: 650px;">
     <div class="card-body">
       <form [formGroup]="trajetForm" (ngSubmit)="onSubmit()">
 

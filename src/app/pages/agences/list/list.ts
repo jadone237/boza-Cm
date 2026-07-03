@@ -24,15 +24,25 @@ export class List implements OnInit {
   page: number = 1;
   pageSize: number = 4;
   totalPages: number = 0;
+  notification: string = '';
 
   constructor(
     private router: Router,
     private agenceService: AgenceService,
     private cd: ChangeDetectorRef
-  ) {}
+  ) {
+  const nav = this.router.getCurrentNavigation();
+    const state = nav?.extras?.state as { message?: string } | undefined;
+    if (state?.message) {
+      this.notification = state.message;
+    }
+  }
 
   ngOnInit() {
     this.chargerAgences();
+    if (this.notification) {
+      setTimeout(() => { this.notification = ''; this.cd.detectChanges(); }, 3000);
+    }
   }
 
   chargerAgences() {
