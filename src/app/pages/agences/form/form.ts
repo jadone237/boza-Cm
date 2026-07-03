@@ -37,7 +37,7 @@ export class Form implements OnInit {
       this.isEditMode = true;
       this.agenceId = +id;
       this.agenceService.getAgenceById(this.agenceId).subscribe({
-        next: (data: any) => {{
+        next: (data: any) => {
           this.agenceForm.patchValue({
             nom: data.nom,
             email: data.email,
