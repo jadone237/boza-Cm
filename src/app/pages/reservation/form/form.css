@@ -1,0 +1,483 @@
+/* ===== IMPORT POLICE ===== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ===== CONTAINER PRINCIPAL ===== */
+.client-container {
+  min-height: 100vh;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 48px;
+  border-bottom: 1px solid #e2e8f0;
+  background: white;
+  height: 70px;
+}
+
+.nav-logo {
+  font-size: 20px;
+  font-weight: 700;
+  color: #172554;
+}
+
+.nav-links {
+  display: flex;
+  gap: 32px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #64748b;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.nav-link.active {
+  color: #0f766e;
+  border-bottom: 2px solid #0f766e;
+  padding-bottom: 2px;
+}
+
+.nav-user {
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* ===== CONTENU PRINCIPAL ===== */
+.form-main {
+  flex: 1;
+  padding: 40px 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ===== TITRE ===== */
+.form-title {
+  margin-bottom: 32px;
+}
+
+.form-title h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 8px;
+}
+
+.form-title p {
+  color: #64748b;
+  font-size: 15px;
+  max-width: 500px;
+  line-height: 1.6;
+}
+
+/* ===== LAYOUT 2 COLONNES ===== */
+.form-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+/* ===== COLONNE GAUCHE ===== */
+.trip-info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Image du bus */
+.trip-image-placeholder {
+  background: linear-gradient(135deg, #0f766e, #172554);
+  border-radius: 12px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 60px;
+  position: relative;
+}
+
+.trip-badge {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  background: rgba(0,0,0,0.5);
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.5px;
+}
+
+/* Détails du trajet */
+.trip-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.trip-route {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.trip-route h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.trip-price {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0f766e;
+}
+
+.trip-taxes {
+  font-size: 11px;
+  color: #94a3b8;
+  text-align: right;
+  margin-top: -8px;
+}
+
+.trip-depart {
+  font-size: 13px;
+  color: #64748b;
+}
+
+/* Stats durée/places */
+.trip-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 8px 0;
+}
+
+.trip-stat {
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 12px 16px;
+}
+
+.trip-stat small {
+  font-size: 11px;
+  color: #94a3b8;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.trip-stat p {
+  font-size: 15px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+/* Amenités */
+.trip-amenities {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.amenity {
+  font-size: 13px;
+  color: #475569;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Note importante */
+.trip-note {
+  background: #f0fdf4;
+  border-left: 4px solid #0f766e;
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 8px;
+}
+
+.trip-note h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 6px;
+}
+
+.trip-note p {
+  font-size: 13px;
+  color: #475569;
+  line-height: 1.5;
+}
+
+/* ===== COLONNE DROITE - FORMULAIRE ===== */
+.booking-form {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+.booking-form h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #0f766e;
+}
+
+/* Onglets Bus/Avion */
+.transport-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr; /* 3 colonnes au lieu de 2 */
+  gap: 8px;
+}
+
+.tab {
+  padding: 10px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: #64748b;
+  transition: all 0.2s;
+}
+
+.tab.active {
+  background: #ccfbf1;
+  border-color: #0f766e;
+  color: #0f766e;
+  font-weight: 600;
+}
+
+/* Groupes de formulaire */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #64748b;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px 40px 10px 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #0f172a;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-input:focus {
+  border-color: #0f766e;
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1);
+}
+
+.form-input::placeholder {
+  color: #cbd5e1;
+}
+
+.input-icon {
+  position: absolute;
+  right: 12px;
+  font-size: 16px;
+  color: #94a3b8;
+  pointer-events: none;
+}
+
+/* Ligne avec 2 champs côte à côte */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* Montant total */
+.total-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f8fafc;
+  border-radius: 10px;
+  padding: 16px 20px;
+  border: 1px solid #e2e8f0;
+}
+
+.total-left small {
+  font-size: 12px;
+  color: #64748b;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.total-left h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.total-right span {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 13px;
+  color: #475569;
+}
+
+/* Bouton confirmer */
+.btn-confirm {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #ea580c, #f97316);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn-confirm:hover {
+  opacity: 0.9;
+}
+
+/* Texte conditions */
+.form-terms {
+  font-size: 12px;
+  color: #94a3b8;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.form-terms a {
+  color: #0f766e;
+  text-decoration: none;
+}
+
+.form-terms a:hover {
+  text-decoration: underline;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  background: #172554;
+  color: white;
+  padding: 24px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer-logo {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.footer-links {
+  display: flex;
+  gap: 24px;
+}
+
+.footer-links a {
+  color: #93c5fd;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.footer span {
+  font-size: 12px;
+  color: #93c5fd;
+}
+
+.trip-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.trip-image {
+  position: relative;
+}
+
+.logo-img {
+  height: 55px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* ===== MESSAGES D'ERREUR ===== */
+.error-message {
+  color: #dc2626;
+  font-size: 12px;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.input-error {
+  border-color: #dc2626 !important;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1) !important;
+}
+
+/* ===== SPINNER ===== */
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 3px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.btn-confirm:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}

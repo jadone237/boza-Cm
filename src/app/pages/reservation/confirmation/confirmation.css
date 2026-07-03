@@ -1,0 +1,259 @@
+/* ===== IMPORT POLICE ===== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ===== CONTAINER PRINCIPAL ===== */
+.email-container {
+  max-width: 680px;
+  margin: 40px auto;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+/* ===== EN-TÊTE EMAIL ===== */
+.email-header {
+  background: white;
+  padding: 20px 28px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.email-meta p {
+  font-size: 13px;
+  color: #475569;
+  margin-bottom: 4px;
+  line-height: 1.6;
+}
+
+.email-meta strong {
+  color: #0f172a;
+}
+
+/* ===== CORPS DE L'EMAIL ===== */
+.email-body {
+  background: #f8fafc;
+}
+
+/* ===== BANNIÈRE ===== */
+.email-banner {
+  background: #172554;
+  padding: 28px 28px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.banner-logo {
+  margin-bottom: 8px;
+}
+
+.banner-logo-img {
+  height: 100px;
+  width: auto;
+  object-fit: contain;
+  /* filtre pour rendre le logo visible sur fond sombre */
+  filter: brightness(0) invert(1);
+}
+
+.email-banner h1 {
+  font-size: 22px;
+  font-weight: 700;
+  color: white;
+}
+
+.email-banner p {
+  font-size: 14px;
+  color: #93c5fd;
+}
+
+/* ===== CONTENU ===== */
+.email-content {
+  background: white;
+  margin: 24px;
+  border-radius: 12px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.email-content p {
+  font-size: 14px;
+  color: #475569;
+  line-height: 1.6;
+}
+
+.email-content strong {
+  color: #0f172a;
+}
+
+/* ===== RÉCAPITULATIF ===== */
+.recap-box {
+  background: #f8fafc;
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid #e2e8f0;
+}
+
+.recap-box h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f766e;
+  margin-bottom: 16px;
+}
+
+.recap-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.recap-item:last-child {
+  border-bottom: none;
+}
+
+.recap-label {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.recap-value {
+  font-size: 13px;
+  color: #0f172a;
+  text-align: right;
+}
+
+.recap-id {
+  color: #0f766e;
+  font-weight: 600;
+}
+
+.recap-price {
+  color: #0f766e;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+/* ===== BILLET PDF ===== */
+.ticket-box {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: white;
+  border: 1px dashed #cbd5e1;
+  border-radius: 10px;
+  padding: 16px 20px;
+}
+
+.ticket-icon {
+  font-size: 36px;
+  flex-shrink: 0;
+}
+
+.ticket-info {
+  flex: 1;
+}
+
+.ticket-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 2px !important;
+}
+
+.ticket-size {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.btn-download {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #ea580c, #f97316);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.2s;
+  flex-shrink: 0;
+}
+
+.btn-download:hover {
+  opacity: 0.9;
+}
+
+/* ===== FOOTER EMAIL ===== */
+.email-footer {
+  padding: 20px 28px;
+  text-align: center;
+  border-top: 1px solid #e2e8f0;
+  margin: 0 24px 24px 24px;
+}
+
+.email-footer p {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.btn-download {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #ea580c, #f97316);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: opacity 0.2s;
+}
+
+.btn-download:hover {
+  opacity: 0.9;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .email-container {
+    margin: 16px;
+    border-radius: 8px;
+  }
+  .email-banner {
+    padding: 24px 16px;
+  }
+  .email-content {
+    margin: 12px;
+    padding: 16px;
+  }
+  .ticket-box {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .btn-download {
+    width: 100%;
+    text-align: center;
+  }
+  .recap-item {
+    flex-direction: column;
+    gap: 4px;
+  }
+}

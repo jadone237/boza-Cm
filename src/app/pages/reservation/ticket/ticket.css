@@ -1,0 +1,400 @@
+/* ===== IMPORT POLICE ===== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ===== PAGE PRINCIPALE ===== */
+.ticket-page {
+  min-height: 100vh;
+  background: #f8fafc;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+/* ===== BARRE D'ACTIONS EN HAUT ===== */
+.ticket-actions-bar {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ticket-brand {
+  font-size: 18px;
+  font-weight: 700;
+  color: #172554;
+}
+
+.actions-right {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-action-bar {
+  width: 36px;
+  height: 36px;
+  border: 1px solid #e2e8f0;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.btn-action-bar:hover {
+  border-color: #172554;
+  color: #172554;
+}
+
+/* ===== CONTAINER BILLET ===== */
+.ticket-container {
+  width: 100%;
+  max-width: 600px;
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.10);
+}
+
+/* ===== HEADER BILLET ===== */
+.ticket-header {
+  background: #172554;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ticket-company {
+  font-size: 11px;
+  color: #93c5fd;
+  letter-spacing: 1.5px;
+  margin-bottom: 4px;
+}
+
+.ticket-header-left h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+}
+
+.ticket-header-right {
+  text-align: right;
+}
+
+.ticket-number {
+  font-size: 12px;
+  font-weight: 600;
+  color: #0f766e;
+  background: #ccfbf1;
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-bottom: 6px;
+  display: inline-block;
+}
+
+.ticket-date {
+  font-size: 11px;
+  color: #93c5fd;
+}
+
+/* ===== CORPS DU BILLET ===== */
+.ticket-body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* TRAJET */
+.ticket-route {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  background: #f8fafc;
+  border-radius: 12px;
+}
+
+.route-from,
+.route-to {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.route-from small,
+.route-to small {
+  font-size: 10px;
+  color: #94a3b8;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.route-from h1,
+.route-to h1 {
+  font-size: 36px;
+  font-weight: 800;
+  color: #172554;
+  line-height: 1;
+}
+
+.route-from p,
+.route-to p {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.route-to {
+  text-align: right;
+}
+
+.route-arrow {
+  font-size: 24px;
+  color: #0f766e;
+}
+
+/* LIGNE POINTILLÉE */
+.ticket-divider {
+  border-top: 2px dashed #e2e8f0;
+  margin: 0 -24px;
+}
+
+/* DÉTAILS */
+.ticket-details {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.ticket-detail small {
+  display: block;
+  font-size: 10px;
+  color: #94a3b8;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.ticket-detail p {
+  font-size: 13px;
+  font-weight: 600;
+  color: #172554;
+}
+
+.ticket-class {
+  background: #ccfbf1;
+  color: #0f766e;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+/* PASSAGER ET QR CODE */
+.ticket-passenger-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.ticket-passenger small {
+  display: block;
+  font-size: 10px;
+  color: #94a3b8;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.passenger-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.passenger-avatar {
+  font-size: 36px;
+}
+
+.passenger-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #172554;
+  margin-bottom: 2px;
+}
+
+.passenger-email,
+.passenger-phone {
+  font-size: 12px;
+  color: #64748b;
+  margin-bottom: 2px;
+}
+
+/* QR CODE */
+.ticket-qr {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.qr-code {
+  background: #172554;
+  padding: 12px;
+  border-radius: 10px;
+}
+
+.qr-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 3px;
+  width: 90px;
+  height: 90px;
+}
+
+.qr-cell {
+  border-radius: 2px;
+}
+
+.qr-cell.dark {
+  background: white;
+}
+
+.qr-cell.light {
+  background: #172554;
+}
+
+.qr-label {
+  font-size: 9px;
+  color: #94a3b8;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* FOOTER BILLET */
+.ticket-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ea580c;
+  border-radius: 10px;
+  padding: 14px 20px;
+}
+
+.ticket-warning {
+  font-size: 13px;
+  color: white;
+  font-weight: 500;
+}
+
+.ticket-price {
+  font-size: 13px;
+  color: white;
+}
+
+.ticket-price strong {
+  font-size: 18px;
+  font-weight: 800;
+}
+
+/* BAS DU BILLET */
+.ticket-bottom {
+  padding: 16px 24px;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ticket-bottom p {
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+.ticket-bottom-links {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+}
+
+.ticket-bottom-links a {
+  font-size: 12px;
+  color: #0f766e;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.ticket-bottom-links a:hover {
+  text-decoration: underline;
+}
+
+
+/* ===== IMPRESSION ===== */
+@media print {
+  .ticket-actions-bar {
+    display: none; /* cache les boutons à l'impression */
+  }
+
+  .ticket-page {
+    background: white;
+    padding: 0;
+  }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .ticket-page {
+    padding: 12px;
+  }
+  .ticket-header {
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px;
+  }
+  .ticket-header-right {
+    text-align: left;
+  }
+  .ticket-body {
+    padding: 16px;
+  }
+  .route-from h1,
+  .route-to h1 {
+    font-size: 28px;
+  }
+  .ticket-details {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .ticket-passenger-row {
+    flex-direction: column;
+    gap: 16px;
+  }
+  .ticket-qr {
+    width: 100%;
+    align-items: center;
+  }
+  .ticket-footer {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+    padding: 12px;
+  }
+}
