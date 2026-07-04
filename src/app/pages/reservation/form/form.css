@@ -477,6 +477,77 @@
   to { transform: rotate(360deg); }
 }
 
+/* ===== RESPONSIVE TABLETTE ===== */
+@media (max-width: 900px) {
+  .form-main {
+    padding: 24px;
+  }
+
+  .form-layout {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+/* ===== RESPONSIVE MOBILE ===== */
+@media (max-width: 576px) {
+  .navbar {
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 12px 16px;
+    height: auto;
+  }
+
+  .form-main {
+    padding: 16px;
+  }
+
+  .form-title h1 {
+    font-size: 22px;
+  }
+
+  .trip-image-placeholder,
+  .trip-img {
+    height: 140px;
+  }
+
+  .trip-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-form {
+    padding: 20px;
+  }
+
+  .transport-tabs {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 6px;
+  }
+
+  .tab {
+    padding: 8px 4px;
+    font-size: 12px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .total-box {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .footer {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+    padding: 20px;
+  }
+}
+
 .btn-confirm:disabled {
   opacity: 0.7;
   cursor: not-allowed;

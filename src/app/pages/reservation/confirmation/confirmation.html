@@ -1,11 +1,23 @@
-<div class="email-container">
+<div *ngIf="isLoading" class="text-center py-5">
+  <div class="spinner-border text-primary" role="status"></div>
+  <p class="mt-2 text-muted">Chargement de votre confirmation...</p>
+</div>
+
+<div *ngIf="!isLoading && errorMessage" class="alert alert-danger text-center m-4">
+  {{ errorMessage }}
+  <div class="mt-3">
+    <a routerLink="/accueil" class="btn btn-primary">Retour à l'accueil</a>
+  </div>
+</div>
+
+<div class="email-container" *ngIf="!isLoading && billet">
 
   <!-- EN-TÊTE EMAIL -->
   <div class="email-header">
     <div class="email-meta">
       <p><strong>De :</strong> noreply&#64;bozacm.cm</p>
-      <p><strong>À :</strong> serge.atangana&#64;gmail.com</p>
-      <p><strong>Objet :</strong> ✅ Confirmation réservation BozaCM — BZC-2026-00147</p>
+      <p><strong>À :</strong> {{ billet.clientEmail }}</p>
+      <p><strong>Objet :</strong> ✅ Confirmation réservation BozaCM — {{ billet.numeroBillet }}</p>
     </div>
   </div>
 
@@ -23,7 +35,7 @@
 
     <!-- CONTENU -->
     <div class="email-content">
-      <p>Bonjour <strong>Serge Atangana</strong>,</p>
+      <p>Bonjour <strong>{{ billet.nomCompletSurBillet }}</strong>,</p>
       <p>Votre réservation a été confirmée. Votre billet est en pièce jointe au format PDF.</p>
 
       <!-- RÉCAPITULATIF -->
@@ -31,19 +43,19 @@
         <h3>Récapitulatif</h3>
         <div class="recap-item">
           <span class="recap-label">Trajet</span>
-          <span class="recap-value"><strong>Yaoundé → Douala</strong></span>
+          <span class="recap-value"><strong>{{ billet.villeDeDepart }} → {{ billet.villeArrivee }}</strong></span>
         </div>
         <div class="recap-item">
           <span class="recap-label">Date</span>
-          <span class="recap-value"><strong>15 Avril 2026 · 07h00</strong></span>
+          <span class="recap-value"><strong>{{ billet.dateDepart | date:'dd/MM/yyyy · HH:mm' }}</strong></span>
         </div>
         <div class="recap-item">
           <span class="recap-label">N° réservation</span>
-          <span class="recap-value recap-id">BZC-2026-00147</span>
+          <span class="recap-value recap-id">{{ billet.numeroBillet }}</span>
         </div>
         <div class="recap-item">
           <span class="recap-label">Montant</span>
-          <span class="recap-value recap-price">5 000 FCFA</span>
+          <span class="recap-value recap-price">{{ billet.prixReservation | number }} FCFA</span>
         </div>
       </div>
 
@@ -51,12 +63,12 @@
       <div class="ticket-box">
         <div class="ticket-icon">📄</div>
         <div class="ticket-info">
-          <p class="ticket-name">Billet_BZC-2026-00147.pdf</p>
-          <p class="ticket-size">142 Ko · PDF</p>
+          <p class="ticket-name">Billet_{{ billet.numeroBillet }}.pdf</p>
+          <p class="ticket-size">PDF</p>
         </div>
-          <a routerLink="/ticket" class="btn-download">
-            ⬇️ Télécharger
-          </a>
+        <a [routerLink]="['/ticket']" [queryParams]="{ numeroBillet: billet.numeroBillet }" class="btn-download">
+          ⬇️ Télécharger
+        </a>
       </div>
 
     </div>

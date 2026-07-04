@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { RouterOutlet, RouterLink, RouterLinkActive, Router } from '@angular/router';
+import { RouterOutlet, RouterLink, RouterLinkActive, Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-layout',
@@ -19,7 +20,23 @@ export class Layout {
     { label: 'Rapports', icon: 'bi-file-text', route: '/dashboard/rapports' },
   ];
 
-  constructor(private router: Router) {}
+  // Menu latéral ouvert (uniquement pertinent sur mobile/tablette < 992px)
+  sidebarOuvert = false;
+
+  constructor(private router: Router) {
+    // Ferme automatiquement le menu mobile après un changement de page
+    this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe(() => {
+      this.sidebarOuvert = false;
+    });
+  }
+
+  toggleSidebar(): void {
+    this.sidebarOuvert = !this.sidebarOuvert;
+  }
+
+  fermerSidebar(): void {
+    this.sidebarOuvert = false;
+  }
 
   logout() {
     this.router.navigate(['/login']);

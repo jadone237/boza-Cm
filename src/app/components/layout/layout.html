@@ -1,11 +1,29 @@
-<div class="d-flex" style="min-height: 100vh;">
+<div class="dashboard-shell">
+
+  <!-- BARRE SUPÉRIEURE MOBILE (hamburger, visible uniquement < 992px) -->
+  <div class="mobile-topbar">
+    <button class="btn-hamburger" (click)="toggleSidebar()" aria-label="Ouvrir le menu">
+      <i class="bi bi-list"></i>
+    </button>
+    <span class="fw-bold" style="color:#0d1f3c;">BozaCM</span>
+  </div>
+
+  <!-- OVERLAY : ferme le menu au clic en dehors -->
+  <div class="sidebar-overlay" *ngIf="sidebarOuvert" (click)="fermerSidebar()"></div>
+
   <!-- BARRE LATÉRALE (SIDEBAR) -->
-  <aside class="bg-white border-end d-flex flex-column justify-content-between p-3" style="width: 280px; min-height: 100vh;">
+  <aside class="dashboard-sidebar bg-white d-flex flex-column justify-content-between p-3"
+    [class.sidebar-ouvert]="sidebarOuvert">
     <div>
       <!-- En-tête de la plateforme -->
-      <div class="ps-3 py-4">
-        <h4 class="fw-bold mb-1" style="color: #0d1f3c; letter-spacing: -0.5px;">BozaCM</h4>
-        <span class="text-muted text-uppercase fw-bold" style="font-size: 9px; letter-spacing: 0.8px;">Plateforme d'administration</span>
+      <div class="d-flex justify-content-between align-items-start ps-3 py-4">
+        <div>
+          <h4 class="fw-bold mb-1" style="color: #0d1f3c; letter-spacing: -0.5px;">BozaCM</h4>
+          <span class="text-muted text-uppercase fw-bold" style="font-size: 9px; letter-spacing: 0.8px;">Plateforme d'administration</span>
+        </div>
+        <button class="btn-close-sidebar" (click)="fermerSidebar()" aria-label="Fermer le menu">
+          <i class="bi bi-x-lg"></i>
+        </button>
       </div>
 
       <!-- Liens de Navigation -->
@@ -69,7 +87,7 @@
   </aside>
 
   <!-- CONTENU PRINCIPAL DE L'ADMINISTRATION -->
-  <main class="flex-grow-1 bg-light p-4" style="overflow-y: auto; max-height: 100vh;">
+  <main class="dashboard-main">
     <router-outlet></router-outlet>
   </main>
 </div>

@@ -3,12 +3,14 @@
   <!-- NAVBAR -->
   <nav class="navbar">
     <div class="nav-logo">
-      <img src="logo.png" alt="BozaCM" class="logo-img"/>
+      <a routerLink="/accueil" style="text-decoration:none; display:flex; align-items:center;">
+        <img src="logo.png" alt="BozaCM" class="logo-img"/>
+      </a>
     </div>
     <div class="nav-links">
-      <a href="#" class="nav-link">Accueil</a>
-      <a href="#" class="nav-link">Offres</a>
-      <a href="#" class="nav-link active">Réserver</a>
+      <a routerLink="/accueil" class="nav-link">Accueil</a>
+      <a routerLink="/reservations" class="nav-link">Réservations</a>
+      <a class="nav-link active">Réserver</a>
     </div>
     <div class="nav-user">👤</div>
   </nav>
@@ -16,194 +18,221 @@
   <!-- CONTENU PRINCIPAL -->
   <main class="form-main">
 
-    <!-- TITRE -->
-    <div class="form-title">
-      <h1>Confirmation de votre voyage</h1>
-      <p>Finalisez votre réservation pour votre trajet interurbain. Une expérience de voyage premium vous attend avec BozaCM.</p>
+    <div *ngIf="isLoading" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status"></div>
+      <p class="mt-2 text-muted">Chargement des détails de l'offre...</p>
     </div>
 
-    <!-- LAYOUT 2 COLONNES -->
-    <div class="form-layout">
-
-      <!-- COLONNE GAUCHE - Infos du voyage -->
-      <div class="trip-info">
-
-        <!-- Image du bus -->
-        <div class="trip-image">
-          <img src="bus.jpg" alt="Bus VIP" class="trip-img"/>
-          <span class="trip-badge">BUS VIP CLIMATISÉ</span>
-        </div>
-
-        <!-- Détails du trajet -->
-        <div class="trip-details">
-          <div class="trip-route">
-            <h2>Yaoundé → Douala</h2>
-            <span class="trip-price">5 000 FCFA</span>
-          </div>
-          <p class="trip-taxes">TOUTES TAXES COMPRISES</p>
-          <p class="trip-depart">🕐 Départ aujourd'hui à 14h30</p>
-
-          <div class="trip-stats">
-            <div class="trip-stat">
-              <small>Durée estimée</small>
-              <p>3h 30min</p>
-            </div>
-            <div class="trip-stat">
-              <small>Places disponibles</small>
-              <p>20 places</p>
-            </div>
-          </div>
-
-          <div class="trip-amenities">
-            <div class="amenity">✅ Sièges inclinables et spacieux</div>
-            <div class="amenity">✅ Wi-Fi haut débit et ports USB</div>
-            <div class="amenity">✅ Service à bord inclus</div>
-          </div>
-
-          <!-- Note importante -->
-          <div class="trip-note">
-            <h4>Note Importante</h4>
-            <p>Veuillez vous présenter au terminal au moins 30 minutes avant le départ pour l'enregistrement de vos bagages.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- COLONNE DROITE - Formulaire -->
-      <div class="booking-form">
-        <h3>Informations passager</h3>
-
-        <!-- Sélection type transport -->
-        <div class="transport-tabs">
-          <button class="tab" 
-           [class.active]="selectedTransport === 'bus'"
-            (click)="selectTransport('bus')">🚌 Bus</button>
-          <button class="tab"
-            [class.active]="selectedTransport === 'train'"
-            (click)="selectTransport('train')">🚂 Train</button>
-          <button class="tab"
-            [class.active]="selectedTransport === 'avion'"
-            (click)="selectTransport('avion')">✈️ Avion</button>
-        </div>
-
-        <!-- FORMULAIRE REACTIVE -->
-        <form class="passenger-form" 
-          [formGroup]="reservationForm" 
-          (ngSubmit)="onSubmit()">
-
-          <!-- NOM COMPLET -->
-          <div class="form-group">
-            <label>NOM COMPLET</label>
-            <div class="input-wrapper">
-              <input
-                type="text"
-                placeholder="Entrez votre nom et prénom"
-                class="form-input"
-                formControlName="nomComplet"
-                [class.input-error]="formSubmitted && f['nomComplet'].errors"/>
-              <span class="input-icon">👤</span>
-            </div>
-            @if (formSubmitted && f['nomComplet'].errors) {
-              <div class="error-message">
-                @if (f['nomComplet'].errors['required']) {
-                  <span>⚠️ Le nom complet est obligatoire</span>
-                }
-                @if (f['nomComplet'].errors['minlength']) {
-                  <span>⚠️ Minimum 3 caractères</span>
-                }
-              </div>
-            }
-          </div>
-
-          <!-- EMAIL ET TÉLÉPHONE -->
-          <div class="form-row">
-            <div class="form-group">
-              <label>EMAIL</label>
-              <div class="input-wrapper">
-                <input
-                  type="email"
-                  placeholder="votre&#64;email.com"
-                  class="form-input"
-                  formControlName="email"
-                  [class.input-error]="formSubmitted && f['email'].errors"/>
-                <span class="input-icon">✉️</span>
-              </div>
-              @if (formSubmitted && f['email'].errors) {
-                <div class="error-message">
-                  @if (f['email'].errors['required']) {
-                    <span>⚠️ L'email est obligatoire</span>
-                  }
-                  @if (f['email'].errors['email']) {
-                    <span>⚠️ Email invalide</span>
-                  }
-                </div>
-              }
-            </div>
-
-            <div class="form-group">
-              <label>TÉLÉPHONE</label>
-              <div class="input-wrapper">
-                <input
-                  type="tel"
-                  placeholder="+237 ..."
-                  class="form-input"
-                  formControlName="telephone"
-                  [class.input-error]="formSubmitted && f['telephone'].errors"/>
-                <span class="input-icon">📱</span>
-              </div>
-              @if (formSubmitted && f['telephone'].errors) {
-                <div class="error-message">
-                  @if (f['telephone'].errors['required']) {
-                    <span>⚠️ Le téléphone est obligatoire</span>
-                  }
-                  @if (f['telephone'].errors['pattern']) {
-                    <span>⚠️ 9 chiffres requis</span>
-                  }
-                </div>
-              }
-            </div>
-          </div>
-
-          <!-- MONTANT TOTAL -->
-          <div class="total-box">
-            <div class="total-left">
-              <small>Montant total</small>
-              <h2>5 000 FCFA</h2>
-            </div>
-            <div class="total-right">
-              <span>1 Adulte</span>
-            </div>
-          </div>
-
-          <!-- BOUTON CONFIRMER AVEC SPINNER -->
-          <button type="submit" class="btn-confirm" [disabled]="isLoading">
-            @if (isLoading) {
-              <span class="spinner"></span>
-              Traitement en cours...
-            } @else {
-              ✅ Confirmer la réservation
-            }
-          </button>
-
-          <p class="form-terms">
-            En cliquant sur confirmer, vous acceptez nos
-            <a href="#">Conditions Générales de Vente</a> et notre
-            <a href="#">Politique de Confidentialité</a>.
-          </p>
-
-        </form>
+    <div *ngIf="!isLoading && errorMessage && !offre" class="alert alert-danger text-center">
+      {{ errorMessage }}
+      <div class="mt-3">
+        <a routerLink="/accueil" class="btn btn-primary">Retour à l'accueil</a>
       </div>
     </div>
+
+    <ng-container *ngIf="!isLoading && offre">
+
+      <!-- TITRE -->
+      <div class="form-title">
+        <h1>Confirmation de votre voyage</h1>
+        <p>Finalisez votre réservation pour votre trajet interurbain. Une expérience de voyage premium vous attend avec BozaCM.</p>
+      </div>
+
+      <!-- LAYOUT 2 COLONNES -->
+      <div class="form-layout">
+
+        <!-- COLONNE GAUCHE - Infos du voyage -->
+        <div class="trip-info">
+
+          <!-- Image du bus -->
+          <div class="trip-image">
+            <img src="bus.jpg" alt="Bus VIP" class="trip-img"/>
+            <span class="trip-badge">{{ offre.titre || 'OFFRE VOYAGE' }}</span>
+          </div>
+
+          <!-- Détails du trajet -->
+          <div class="trip-details">
+            <div class="trip-route">
+              <h2>{{ offre.villeDepart }} → {{ offre.villeArrivee }}</h2>
+              <span class="trip-price">{{ (offre.prix || offre.tarif) | number }} FCFA</span>
+            </div>
+            <p class="trip-taxes">TOUTES TAXES COMPRISES · PRIX IDENTIQUE QUEL QUE SOIT LE MOYEN CHOISI</p>
+            <p class="trip-depart">🕐 Départ le {{ offre.dateDepart | date:'dd/MM/yyyy à HH:mm' }}</p>
+
+            <div class="trip-stats">
+              <div class="trip-stat">
+                <small>Durée estimée</small>
+                <p>{{ offre.trajet?.duree || '—' }}</p>
+              </div>
+              <div class="trip-stat">
+                <small>Places disponibles</small>
+                <p>{{ offre.placesDisponibles ?? offre.nombrePlaces ?? '—' }} places</p>
+              </div>
+            </div>
+
+            <div class="trip-amenities" *ngIf="offre.description">
+              <div class="amenity">✅ {{ offre.description }}</div>
+            </div>
+
+            <!-- Note importante -->
+            <div class="trip-note">
+              <h4>Note Importante</h4>
+              <p>Veuillez vous présenter au terminal au moins 30 minutes avant le départ pour l'enregistrement de vos bagages.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- COLONNE DROITE - Formulaire -->
+        <div class="booking-form">
+          <h3>Informations passager</h3>
+
+          <!-- Sélection type transport -->
+          <div class="transport-tabs">
+            <button type="button" class="tab"
+              [class.active]="selectedTransport === 'bus'"
+              (click)="selectTransport('bus')">🚌 Bus</button>
+            <button type="button" class="tab"
+              [class.active]="selectedTransport === 'train'"
+              (click)="selectTransport('train')">🚂 Train</button>
+            <button type="button" class="tab"
+              [class.active]="selectedTransport === 'avion'"
+              (click)="selectTransport('avion')">✈️ Avion</button>
+          </div>
+
+          <div class="error-message" *ngIf="errorMessage">⚠️ {{ errorMessage }}</div>
+
+          <!-- FORMULAIRE REACTIVE -->
+          <form class="passenger-form"
+            [formGroup]="reservationForm"
+            (ngSubmit)="confirmerReservation()">
+
+            <!-- PRENOM / NOM -->
+            <div class="form-row">
+              <div class="form-group">
+                <label>Prénom</label>
+                <div class="input-wrapper">
+                  <input
+                    type="text"
+                    placeholder="Votre prénom"
+                    class="form-input"
+                    formControlName="prenom"
+                    [class.input-error]="reservationForm.get('prenom')?.invalid && reservationForm.get('prenom')?.touched"/>
+                  <span class="input-icon">👤</span>
+                </div>
+                <div class="error-message" *ngIf="reservationForm.get('prenom')?.invalid && reservationForm.get('prenom')?.touched">
+                  <span>⚠️ Le prénom est obligatoire</span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Nom</label>
+                <div class="input-wrapper">
+                  <input
+                    type="text"
+                    placeholder="Votre nom"
+                    class="form-input"
+                    formControlName="nom"
+                    [class.input-error]="reservationForm.get('nom')?.invalid && reservationForm.get('nom')?.touched"/>
+                  <span class="input-icon">👤</span>
+                </div>
+                <div class="error-message" *ngIf="reservationForm.get('nom')?.invalid && reservationForm.get('nom')?.touched">
+                  <span>⚠️ Le nom est obligatoire</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- EMAIL ET TÉLÉPHONE -->
+            <div class="form-row">
+              <div class="form-group">
+                <label>Email</label>
+                <div class="input-wrapper">
+                  <input
+                    type="email"
+                    placeholder="votre&#64;email.com"
+                    class="form-input"
+                    formControlName="email"
+                    [class.input-error]="reservationForm.get('email')?.invalid && reservationForm.get('email')?.touched"/>
+                  <span class="input-icon">✉️</span>
+                </div>
+                <div class="error-message" *ngIf="reservationForm.get('email')?.invalid && reservationForm.get('email')?.touched">
+                  <span>⚠️ Un email valide est requis</span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Téléphone</label>
+                <div class="input-wrapper">
+                  <input
+                    type="tel"
+                    placeholder="Ex: 691234567"
+                    class="form-input"
+                    formControlName="numeroTelephone"
+                    [class.input-error]="reservationForm.get('numeroTelephone')?.invalid && reservationForm.get('numeroTelephone')?.touched"/>
+                  <span class="input-icon">📱</span>
+                </div>
+                <div class="error-message" *ngIf="reservationForm.get('numeroTelephone')?.invalid && reservationForm.get('numeroTelephone')?.touched">
+                  <span>⚠️ Doit commencer par 6 et contenir 9 chiffres (ex: 691234567)</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- ADRESSE -->
+            <div class="form-group">
+              <label>Adresse</label>
+              <div class="input-wrapper">
+                <input
+                  type="text"
+                  placeholder="Votre adresse"
+                  class="form-input"
+                  formControlName="adresse"
+                  [class.input-error]="reservationForm.get('adresse')?.invalid && reservationForm.get('adresse')?.touched"/>
+                <span class="input-icon">📍</span>
+              </div>
+              <div class="error-message" *ngIf="reservationForm.get('adresse')?.invalid && reservationForm.get('adresse')?.touched">
+                <span>⚠️ L'adresse est obligatoire</span>
+              </div>
+            </div>
+
+            <!-- MONTANT TOTAL -->
+            <div class="total-box">
+              <div class="total-left">
+                <small>Montant total</small>
+                <h2>{{ (offre.prix || offre.tarif) | number }} FCFA</h2>
+              </div>
+              <div class="total-right">
+                <span>{{ selectedTransport === 'bus' ? '🚌 Bus' : selectedTransport === 'train' ? '🚂 Train' : '✈️ Avion' }}</span>
+              </div>
+            </div>
+
+            <!-- BOUTON CONFIRMER AVEC SPINNER -->
+            <button type="submit" class="btn-confirm" [disabled]="isSubmitting">
+              @if (isSubmitting) {
+                <span class="spinner"></span>
+                Traitement en cours...
+              } @else {
+                ✅ Confirmer la réservation
+              }
+            </button>
+
+            <p class="form-terms">
+              En cliquant sur confirmer, vous acceptez nos
+              <a href="#">Conditions Générales de Vente</a> et notre
+              <a href="#">Politique de Confidentialité</a>.
+            </p>
+
+          </form>
+        </div>
+      </div>
+    </ng-container>
   </main>
 
   <!-- FOOTER -->
   <footer class="footer">
     <div class="footer-logo">BozaCM</div>
     <div class="footer-links">
-      <a href="#">Conditions Générales</a>
-      <a href="#">Confidentialité</a>
-      <a href="#">Aide</a>
+      <a routerLink="/accueil">Retour à l'accueil</a>
     </div>
-    <span>© 2024 BozaCM. Tous droits réservés.</span>
+    <span>© 2026 BozaCM. Tous droits réservés.</span>
   </footer>
 
 </div>

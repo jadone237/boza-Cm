@@ -1,11 +1,23 @@
-<div class="ticket-page">
+<div *ngIf="isLoading" class="text-center py-5">
+  <div class="spinner-border text-primary" role="status"></div>
+  <p class="mt-2 text-muted">Chargement du billet...</p>
+</div>
+
+<div *ngIf="!isLoading && errorMessage" class="alert alert-danger text-center m-4">
+  {{ errorMessage }}
+  <div class="mt-3">
+    <a routerLink="/accueil" class="btn btn-primary">Retour à l'accueil</a>
+  </div>
+</div>
+
+<div class="ticket-page" *ngIf="!isLoading && billet">
 
   <!-- ACTIONS EN HAUT -->
   <div class="ticket-actions-bar">
     <span class="ticket-brand">BozaCM</span>
     <div class="actions-right">
-      <button class="btn-action-bar" onclick="window.print()">🖨️</button>
-      <button class="btn-action-bar">↗️</button>
+      <button class="btn-action-bar" onclick="window.print()" title="Imprimer">🖨️</button>
+      <button class="btn-action-bar" (click)="telechargerPdf()" title="Télécharger le PDF">⬇️</button>
     </div>
   </div>
 
@@ -19,8 +31,8 @@
         <h2>Billet de voyage officiel</h2>
       </div>
       <div class="ticket-header-right">
-        <p class="ticket-number">N° BZC-2026-00147</p>
-        <p class="ticket-date">Émis le 25/03/2026</p>
+        <p class="ticket-number">N° {{ billet.numeroBillet }}</p>
+        <p class="ticket-date">Émis le {{ billet.dateEmission | date:'dd/MM/yyyy' }}</p>
       </div>
     </div>
 
@@ -31,14 +43,14 @@
       <div class="ticket-route">
         <div class="route-from">
           <small>DÉPART</small>
-          <h1>YDE</h1>
-          <p>Yaoundé</p>
+          <h1>{{ codeVille(billet.villeDeDepart) }}</h1>
+          <p>{{ billet.villeDeDepart }}</p>
         </div>
         <div class="route-arrow">🚌 →</div>
         <div class="route-to">
           <small>ARRIVÉE</small>
-          <h1>DLA</h1>
-          <p>Douala</p>
+          <h1>{{ codeVille(billet.villeArrivee) }}</h1>
+          <p>{{ billet.villeArrivee }}</p>
         </div>
       </div>
 
@@ -49,19 +61,19 @@
       <div class="ticket-details">
         <div class="ticket-detail">
           <small>DATE DÉPART</small>
-          <p>15 Avril 2026</p>
+          <p>{{ billet.dateDepart | date:'dd MMMM yyyy' }}</p>
         </div>
         <div class="ticket-detail">
           <small>HEURE</small>
-          <p>07h00</p>
+          <p>{{ billet.dateDepart | date:'HH:mm' }}</p>
         </div>
         <div class="ticket-detail">
           <small>AGENCE</small>
-          <p>Transcam Voyages</p>
+          <p>{{ compagnieTransport() }}</p>
         </div>
         <div class="ticket-detail">
           <small>CLASSE</small>
-          <span class="ticket-class">VIP CLIMATISÉ</span>
+          <span class="ticket-class">{{ classeTransport() }}</span>
         </div>
       </div>
 
@@ -75,51 +87,22 @@
           <div class="passenger-info">
             <div class="passenger-avatar">👤</div>
             <div>
-              <p class="passenger-name">Serge Atangana</p>
-              <p class="passenger-email">serge.atangana&#64;email.com</p>
-              <p class="passenger-phone">+237 6xx xx xx xx</p>
+              <p class="passenger-name">{{ billet.nomCompletSurBillet }}</p>
+              <p class="passenger-email">{{ billet.clientEmail }}</p>
+              <p class="passenger-phone">{{ billet.clientTelephone }}</p>
             </div>
           </div>
         </div>
         <div class="ticket-qr">
-          <div class="qr-code">
+          <img *ngIf="billet.qrcodeUrl" [src]="billet.qrcodeUrl" alt="QR Code" class="qr-code" style="width:90px; height:90px; padding:0;"/>
+          <div class="qr-code" *ngIf="!billet.qrcodeUrl">
             <div class="qr-grid">
-              <div class="qr-cell dark"></div>
-              <div class="qr-cell dark"></div>
-              <div class="qr-cell dark"></div>
-              <div class="qr-cell light"></div>
-              <div class="qr-cell dark"></div>
-              <div class="qr-cell dark"></div>
-              <div class="qr-cell dark"></div>
-              <div class="qr-cell light"></div>
-              <div class="qr-cell dark"></div>
-              <div class="qr-cell light"></div>
-              <div class="qr-cell dark"></div>
-              <div class="qr-cell dark"></div>
-              <div class="qr-cell dark"></div>
-              <div class="qr-cell light"></div>
-              <div class="qr-cell dark"></div>
-              <div class="qr-cell dark"></div>
-              <div class="qr-cell dark"></div>
-              <div class="qr-cell dark"></div>
-              <div class="qr-cell light"></div>
-              <div class="qr-cell dark"></div>
-              <div class="qr-cell light"></div>
-              <div class="qr-cell dark"></div>
-              <div class="qr-cell dark"></div>
-              <div class="qr-cell dark"></div>
-              <div class="qr-cell dark"></div>
-              <div class="qr-cell light"></div>
-              <div class="qr-cell dark"></div>
-              <div class="qr-cell dark"></div>
-              <div class="qr-cell dark"></div>
-              <div class="qr-cell dark"></div>
-              <div class="qr-cell dark"></div>
-              <div class="qr-cell light"></div>
-              <div class="qr-cell dark"></div>
-              <div class="qr-cell light"></div>
-              <div class="qr-cell dark"></div>
-              <div class="qr-cell dark"></div>
+              <div class="qr-cell dark"></div><div class="qr-cell dark"></div><div class="qr-cell dark"></div>
+              <div class="qr-cell light"></div><div class="qr-cell dark"></div><div class="qr-cell dark"></div>
+              <div class="qr-cell dark"></div><div class="qr-cell light"></div><div class="qr-cell dark"></div>
+              <div class="qr-cell light"></div><div class="qr-cell dark"></div><div class="qr-cell dark"></div>
+              <div class="qr-cell dark"></div><div class="qr-cell light"></div><div class="qr-cell dark"></div>
+              <div class="qr-cell dark"></div><div class="qr-cell dark"></div><div class="qr-cell light"></div>
             </div>
           </div>
           <p class="qr-label">SCANNER À L'EMBARQUEMENT</p>
@@ -132,7 +115,7 @@
           ⚠️ Présentez ce billet à l'embarquement
         </div>
         <div class="ticket-price">
-          PRIX TOTAL : <strong>5 000 FCFA</strong>
+          PRIX TOTAL : <strong>{{ billet.prixReservation | number }} FCFA</strong>
         </div>
       </div>
 
@@ -140,10 +123,9 @@
 
     <!-- BAS DU BILLET -->
     <div class="ticket-bottom">
-      <p>Besoin d'aide ? Contactez notre support client au 242 00 00 00 ou visitez une agence Transcam Voyages.</p>
+      <p>Besoin d'aide ? Contactez notre support client ou visitez une agence {{ compagnieTransport() }}.</p>
       <div class="ticket-bottom-links">
-        <a href="#">Transcam</a>
-        <a href="#">BozaCM Pay</a>
+        <a routerLink="/accueil">Retour à l'accueil</a>
       </div>
     </div>
 

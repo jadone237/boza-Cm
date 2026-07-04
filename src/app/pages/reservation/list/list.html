@@ -33,29 +33,41 @@
       </div>
     </div>
 
+    <!-- CHARGEMENT / ERREUR -->
+    <div *ngIf="isLoading" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status"></div>
+      <p class="mt-2 text-muted">Chargement des réservations...</p>
+    </div>
+
+    <div *ngIf="!isLoading && errorMessage" class="alert alert-danger text-center">
+      {{ errorMessage }}
+    </div>
+
+    <ng-container *ngIf="!isLoading">
+
     <!-- STATISTIQUES -->
     <div class="stats-cards">
       <div class="stat-card">
         <div class="stat-icon">📊</div>
         <div>
           <small>TOTAL</small>
-          <h2>{{ reservations.length }}</h2>
-          <p>Volume global mensuel</p>
+          <h2>{{ total }}</h2>
+          <p>Volume global</p>
         </div>
       </div>
       <div class="stat-card confirmed">
         <div class="stat-icon">✅</div>
         <div>
           <small>CONFIRMÉES</small>
-          <h2>{{ reservations | slice:0:reservations.length | json | slice:0:0 }}20</h2>
-          <p>62% du volume total</p>
+          <h2>{{ totalConfirmees }}</h2>
+          <p>{{ pourcentageConfirmees }}% du volume total</p>
         </div>
       </div>
       <div class="stat-card pending">
         <div class="stat-icon">💬</div>
         <div>
           <small>EN ATTENTE</small>
-          <h2>10</h2>
+          <h2>{{ totalAttente }}</h2>
           <p>Nécessite action</p>
         </div>
       </div>
@@ -63,7 +75,7 @@
         <div class="stat-icon">❌</div>
         <div>
           <small>ANNULÉES</small>
-          <h2>4</h2>
+          <h2>{{ totalAnnulees }}</h2>
           <p>Pertes enregistrées</p>
         </div>
       </div>
@@ -80,6 +92,7 @@
         <option value="confirmee">Confirmée</option>
         <option value="attente">En attente</option>
         <option value="annulee">Annulée</option>
+        <option value="terminee">Terminée</option>
       </select>
 
       <!-- [(ngModel)] = Two-Way Binding : lie le select à selectedType -->
@@ -89,6 +102,7 @@
         name="type">
         <option value="tous">Tous types</option>
         <option value="bus">Bus</option>
+        <option value="train">Train</option>
         <option value="avion">Avion</option>
       </select>
 
@@ -120,36 +134,43 @@
               <td>{{ reservation.offre }}</td>
               <td>
                 <span class="type-badge">
-                  {{ reservation.type === 'bus' ? '🚌' : '✈️' }}
+                  {{ reservation.type === 'bus' ? '🚌' : reservation.type === 'train' ? '🚂' : '✈️' }}
                   {{ reservation.type | uppercase }}
                 </span>
               </td>
-              <td>{{ reservation.date }}</td>
+              <td>{{ reservation.dateDepart | date:'dd/MM/yyyy' }}</td>
               <td>
                 <span class="status"
-                  [class.confirmed]="reservation.statut === 'confirmee'"
+                  [class.confirmed]="reservation.statut === 'confirmee' || reservation.statut === 'terminee'"
                   [class.pending]="reservation.statut === 'attente'"
                   [class.cancelled]="reservation.statut === 'annulee'">
                   {{ reservation.statut === 'confirmee' ? 'CONFIRMÉE' :
-                     reservation.statut === 'attente' ? 'EN ATTENTE' : 'ANNULÉE' }}
+                     reservation.statut === 'attente' ? 'EN ATTENTE' :
+                     reservation.statut === 'terminee' ? 'TERMINÉE' : 'ANNULÉE' }}
                 </span>
               </td>
               <td>
                 <div class="actions-cell">
-                  @if (reservation.statut === 'confirmee') {
-                    <button class="btn-billet">Billet</button>
+                  @if (reservation.statut === 'confirmee' || reservation.statut === 'terminee') {
+                    <a *ngIf="reservation.billetNumero" class="btn-billet"
+                      [routerLink]="['/ticket']" [queryParams]="{ numeroBillet: reservation.billetNumero }">Billet</a>
+                    <button *ngIf="!reservation.billetNumero" class="btn-billet" disabled>Billet</button>
                     <button class="btn-annuler"
-                      (click)="annuler(reservation.id)">Annuler</button>
+                      [disabled]="actionEnCoursId === reservation.id"
+                      (click)="annuler(reservation)">Annuler</button>
                   }
                   @if (reservation.statut === 'attente') {
                     <button class="btn-confirmer"
-                      (click)="confirmer(reservation.id)">Confirmer</button>
+                      [disabled]="actionEnCoursId === reservation.id"
+                      (click)="confirmer(reservation)">Confirmer</button>
                     <button class="btn-annuler"
-                      (click)="annuler(reservation.id)">Annuler</button>
+                      [disabled]="actionEnCoursId === reservation.id"
+                      (click)="annuler(reservation)">Annuler</button>
                   }
                   @if (reservation.statut === 'annulee') {
                     <button class="btn-confirmer"
-                      (click)="confirmer(reservation.id)">Confirmer</button>
+                      [disabled]="actionEnCoursId === reservation.id"
+                      (click)="confirmer(reservation)">Confirmer</button>
                     <button class="btn-annuler" disabled>Annuler</button>
                   }
                 </div>
@@ -169,16 +190,11 @@
 
       <!-- PAGINATION -->
       <div class="pagination">
-        <span>Affichage de 1-{{ reservationsFiltrees.length }}
-          sur {{ reservations.length }} réservations</span>
-        <div class="pages">
-          <button>‹</button>
-          <button class="active">1</button>
-          <button>2</button>
-          <button>›</button>
-        </div>
+        <span>Affichage de {{ reservationsFiltrees.length ? 1 : 0 }}-{{ reservationsFiltrees.length }}
+          sur {{ total }} réservations</span>
       </div>
 
     </div>
+    </ng-container>
   </main>
 </div>
