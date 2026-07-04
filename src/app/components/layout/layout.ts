@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive, Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { filter } from 'rxjs';
@@ -23,19 +23,22 @@ export class Layout {
   // Menu latéral ouvert (uniquement pertinent sur mobile/tablette < 992px)
   sidebarOuvert = false;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private cdr: ChangeDetectorRef) {
     // Ferme automatiquement le menu mobile après un changement de page
     this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe(() => {
       this.sidebarOuvert = false;
+      this.cdr.detectChanges();
     });
   }
 
   toggleSidebar(): void {
     this.sidebarOuvert = !this.sidebarOuvert;
+    this.cdr.detectChanges();
   }
 
   fermerSidebar(): void {
     this.sidebarOuvert = false;
+    this.cdr.detectChanges();
   }
 
   logout() {
