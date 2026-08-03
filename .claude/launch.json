@@ -4,7 +4,7 @@
     {
       "name": "bozacm-dev",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["start", "--", "--port", "$PORT"],
+      "runtimeArgs": ["start"],
       "port": 4200,
       "autoPort": true
     }
